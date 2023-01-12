@@ -25,7 +25,7 @@ function TaxiStands({ initialZoom }) {
         {TaxiStandsJSON.value.map(item => {
             return (
                 <>
-                {CurrentZoomLevel >= 15 && (
+                {CurrentZoomLevel >= 14.5 && (
                     <Marker
                         key={item.id}
                         position={[item.Latitude, item.Longitude]}
