@@ -4,6 +4,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import ResetViewControl from "@20tab/react-leaflet-resetview"; 
 
 import MapZoom from "./MapZoom"; 
+import TaxiStands from "./TaxiStands"; 
 
 function LeafletMap() {
     return (
@@ -24,6 +25,7 @@ function LeafletMap() {
                 icon="url(https://raw.githubusercontent.com/se-cohort1-group2/project-ReactJS/71a66e2ba063dc9ae3a652cac95531e249ea5b71/assets/ResetMapView.svg)"
             />
             <MapZoom initialZoom={12}/>
+            <TaxiStands initialZoom={12}/>
             </MapContainer>
         </>
     )
