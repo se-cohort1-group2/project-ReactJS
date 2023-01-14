@@ -11,6 +11,7 @@
         "joi": "^17.7.0",
         "joi-browser": "^13.4.0",
         "leaflet": "^1.9.3",
+        "leaflet-defaulticon-compatibility": "^0.1.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-leaflet": "^4.2.0",
@@ -44,5 +45,8 @@
             "last 1 safari version"
         ]
     },
-    "homepage": "https://se-cohort1-group2.github.io/project-ReactJS"
+    "homepage": "https://se-cohort1-group2.github.io/project-ReactJS",
+    "devDependencies": {
+        "@types/leaflet": "^1.9.0"
+    }
 }

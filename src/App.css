@@ -1,7 +1,13 @@
-.App {
-    text-align: center; 
+.leaflet-container {
+    width: 100vw;
+    height: 100vh;
 }
 
-body {
-    font-family: sans-serif; 
+.arealist {
+    list-style: none;
+    width: 100vw;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+
 }
