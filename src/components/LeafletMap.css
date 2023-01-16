@@ -1,5 +1,33 @@
 .leaflet-container {
-    width: 100%; 
-    height: 100vh; 
-    margin: auto; 
+    width: 100%;
+    height: 90vh;
+    margin:0 1rem 1rem 0;
+}
+
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+}
+  
+.sideBar {
+    display: flex;
+    flex-flow: column;
+    width: 450px;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+.nav {
+    background-color: #cae2f5;
+    padding: 0 1rem;
+}
+
+h1 {
+    text-align: center;
 }
