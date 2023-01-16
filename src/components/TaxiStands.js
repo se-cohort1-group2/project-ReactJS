@@ -12,11 +12,9 @@ function TaxiStands({ initialZoom }) {
     const [ActivePopup, setActivePopup] = useState(null); 
 
     const [CurrentZoomLevel, setCurrentZoomLevel] = useState(initialZoom); 
-
     const mapEvents = useMapEvents({
         zoomend: () => {
             setCurrentZoomLevel(mapEvents.getZoom())
-            console.log("CurrentZoomLevel", CurrentZoomLevel)
         }
     })
 
@@ -41,11 +39,11 @@ function TaxiStands({ initialZoom }) {
                                 setActivePopup(null); 
                             }}
                         >
-                            <div className="popup">
-                                <div className="popup-header">Taxi {item.Type}</div>
-                                <div className="taxi-code">{item.TaxiCode}</div>
-                                <div className="taxi-name">{item.Name}</div>
-                                <div className="taxi-bfa">Barrier Free Access: {item.Bfa}</div>
+                            <div className="popup-TaxiStand">
+                                <div className="popup-TaxiStand-header">Taxi {item.Type}</div>
+                                <div className="popup-TaxiStand-code">{item.TaxiCode}</div>
+                                <div className="">{item.Name}</div>
+                                <div className="">Barrier Free Access: {item.Bfa}</div>
                             </div>
                         </Popup>
                     </Marker>
