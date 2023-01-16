@@ -17,7 +17,7 @@ function LeafletMap() {
                 scrollWheelZoom={true} wheelPxPerZoomLevel={120}
             >
             <TileLayer
-                // copyright attribution, do not remove //
+                // copyright attribution, do not remove
                 attribution='<img src="https://www.onemap.gov.sg/docs/maps/images/oneMap64-01.png" style="height:14px;width:14px;vertical-align:middle;"> <a href="http://onemap.gov.sg" target="_blank" rel="noreferrer">OneMap</a> | © <a href="http://sla.gov.sg" target="_blank" rel="noreferrer">Singapore Land Authority</a>'
                 url="https://maps-{s}.onemap.sg/v3/Default/{z}/{x}/{y}.png"
                 crossOrigin={true}
