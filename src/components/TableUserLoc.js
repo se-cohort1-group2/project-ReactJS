@@ -1,7 +1,7 @@
 import styles from './Table.module.css';
 import { AiFillMinusCircle } from 'react-icons/ai'
 
-function TableUserLoc ({list, handler}) {
+function TableUserLoc ({name, list, handler}) {
 
     return(
         <div>
@@ -9,7 +9,7 @@ function TableUserLoc ({list, handler}) {
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Starting Locations</th>
+                        <th>{name}</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -1,7 +1,7 @@
 import styles from './Table.module.css';
 import { RiEditBoxFill } from 'react-icons/ri'
 
-function TableSelectedLoc ({item, handler}) {
+function TableSelectedLoc ({name, item, handler}) {
 
     return(
         <div>
@@ -9,7 +9,7 @@ function TableSelectedLoc ({item, handler}) {
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Selected Location</th>
+                        <th>{name}</th>
                     </tr>
                 </thead>
                 <tbody>
