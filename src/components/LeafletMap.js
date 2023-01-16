@@ -1,7 +1,7 @@
 import "./LeafletMap.css"; 
 
 import { React, useState } from "react";
-import { MapContainer, TileLayer, Marker } from "react-leaflet"; 
+import { MapContainer, TileLayer, Marker, Polyline } from "react-leaflet"; 
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import {Icon} from 'leaflet'
 import { AiOutlineSearch } from 'react-icons/ai'
@@ -16,6 +16,7 @@ import TableSelectedLoc from "./TableSelectedLoc";
 //functions
 import funcSearch from "./funcSearch";
 import funcGetLocDetails from "./funcGetLocDetails";
+import funcGetRoute from "./funcGetRoute";
 
 
 function LeafletMap() {
@@ -46,6 +47,10 @@ function LeafletMap() {
     const [userSelectedDestDetail, setUserSelectedDestDetail] = useState();
     const [destLatLong, setDestLatLong] = useState();
 
+    //Routing
+    const [showPolyLine, setShowPolyLine] = useState(false);
+    const [polyLatLong, setPolyLatLong] = useState();
+
     const handlerChangeInput = (value) => {
         setUserLocInput(value);
     }
@@ -63,7 +68,6 @@ function LeafletMap() {
     const handlerAddLoc = (id, item) => {
         const newLocList = [item];
         setUserLocList(newLocList)
-        console.log(newLocList);
     }
     
     const handlerDeleteLoc = () => {
@@ -73,7 +77,6 @@ function LeafletMap() {
     const handlerConfirmLoc = () => {
         Object.entries(userLocList).map(([key,value]) => {
             setUserSelectedLocDetail(value);
-            console.log([value.LATITUDE, value.LONGITUDE]);
             setUserLatLog([value.LATITUDE, value.LONGITUDE]);
             setEditLocStatus(false);
             setEditDestStatus(true);
@@ -83,12 +86,12 @@ function LeafletMap() {
     const handlerEditLoc = () => {
         setEditLocStatus(true);
         setEditDestStatus(false);
+        setShowPolyLine(false);
     }
 
     const handlerAddDest = (id, item) => {
         const newDestList = [item];
         setUserDestList(newDestList);
-        console.log(newDestList);
     }
 
     const handlerDeleteDest = () => {
@@ -98,7 +101,6 @@ function LeafletMap() {
     const handlerConfirmDest = () => {
         Object.entries(userDestList).map(([key,value]) => {
             setUserSelectedDestDetail(value);
-            console.log([value.LATITUDE, value.LONGITUDE]);
             setDestLatLong([value.LATITUDE, value.LONGITUDE]);
             setEditDestStatus(false);
         })   
@@ -106,6 +108,7 @@ function LeafletMap() {
 
     const handlerEditDest = () => {
         setEditDestStatus(true);
+        setShowPolyLine(false);
     }
 
     //functon to get device location, unused as the output from OneMap is inconsistent
@@ -119,7 +122,6 @@ function LeafletMap() {
             setGetGeoLocStatus('Location Detected');
               const newUserLatLong = [position.coords.latitude, position.coords.longitude]
               setUserLatLog(newUserLatLong);
-              console.log(newUserLatLong);
               funcGetLocDetails(newUserLatLong, handlerConfirmLoc);
             }, () => {
                 setGetGeoLocStatus('Unable to retrieve your location');
@@ -128,9 +130,15 @@ function LeafletMap() {
           setSelectGeoLocStatus(true);
     }
 
-    const handlerRoute = () => {
-        //placeholder for the routing
-        console.log("hello");
+    const handlerRoute = (type) => {
+        funcGetRoute(userLatLong,destLatLong,type, handlerPolyline);
+    }
+
+    const handlerPolyline = (value) => {
+        let polyline = require('@mapbox/polyline');
+        let newPolyLatLong = [...polyline.decode(value,5)]
+        setPolyLatLong(newPolyLatLong);
+        setShowPolyLine(true);
     }
 
     let locSearchBar;
@@ -194,7 +202,12 @@ function LeafletMap() {
     if (!editLocStatus && !editDestStatus) {
         routing = 
         <div className="search-container">
-            <Button label="Display Route" onClick={handlerRoute}/>
+            <Button label="Driving Route" onClick={ () => {
+                handlerRoute("drive")
+            }}/>
+            <Button label="Walking Route" onClick={ () => {
+                handlerRoute("walk")
+            }}/>
         </div>
     }
 
@@ -223,6 +236,8 @@ function LeafletMap() {
                             url="https://maps-{s}.onemap.sg/v3/Default/{z}/{x}/{y}.png"
                             attribution='<img src="https://www.onemap.gov.sg/docs/maps/images/oneMap64-01.png" style="height:20px;width:20px;"/> OneMap | Map data &copy; contributors, <a href="http://SLA.gov.sg">Singapore Land Authority</a>'/>
                         {userLatLong && <Marker position={userLatLong} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>}
+                        {destLatLong && <Marker position={destLatLong} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>}
+                        {showPolyLine && <Polyline pathOptions={ {color: 'blue'}} positions={polyLatLong}/>}
                     </MapContainer>
                 </div>
 
