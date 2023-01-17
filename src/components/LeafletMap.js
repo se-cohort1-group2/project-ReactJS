@@ -30,7 +30,7 @@ function LeafletMap({ polygon, LocationDetected, setLocationDetected, center, zo
             />
                 <TaxiStands initialZoom={12}/>
                 <TaxiAvailability initialZoom={12}/>
-                <Polygon pathOptions={{ color: "purple" }} positions={polygon}/>
+                <Polygon pathOptions={{ color: "green" }} positions={polygon}/>
                 <SetView center={center} zoom={zoom}/>
                 <DetectLocationMarker LocationDetected={LocationDetected} setLocationDetected={setLocationDetected}/>
             </MapContainer>

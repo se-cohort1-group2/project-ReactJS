@@ -29,7 +29,7 @@ function DetectLocationMarker({ LocationDetected, setLocationDetected }) {
             }}>
                 <Popup>Your current location</Popup>
             </Marker>
-            <Circle center={position} radius={radius} pathOptions={{ fillColor: "blue" }}/>
+            <Circle center={position} radius={radius} pathOptions={{}}/>
         </>
     )
 }
