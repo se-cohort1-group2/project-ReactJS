@@ -1,247 +1,53 @@
-import "./LeafletMap.css"; 
-
-import { React, useState } from "react";
-import { MapContainer, TileLayer, Marker, Polyline } from "react-leaflet"; 
+import { MapContainer, TileLayer, Polygon, Marker, Polyline } from "react-leaflet"; 
+import ResetViewControl from "@20tab/react-leaflet-resetview"; 
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import {Icon} from 'leaflet'
-import { AiOutlineSearch } from 'react-icons/ai'
 
-//components
-import Input from "./Input";
-import Button from "./Button";
-import TableSearchResults from "./TableSearchResults";
-import TableUserLoc from "./TableUserLoc";
-import TableSelectedLoc from "./TableSelectedLoc";
+import TaxiStands from "./TaxiStands"; 
+import TaxiAvailability from "./TaxiAvailability"; 
 
-//functions
-import funcSearch from "./funcSearch";
-import funcGetLocDetails from "./funcGetLocDetails";
-import funcGetRoute from "./funcGetRoute";
+import SetView from "./SetView"; 
+import DetectLocationMarker from "./DetectLocationMarker"; 
 
-
-function LeafletMap() {
-
-    const initialPosition =[1.343, 103.814]
-
-    //Status for user to edit location
-    const [editLocStatus, setEditLocStatus] = useState(true);
-
-    //Edit location - via device location - statuses
-    const [getGeoLocstatus, setGetGeoLocStatus] = useState();
-    const [selectGeoLocStatus,setSelectGeoLocStatus] = useState(false);
-    
-    //Edit location - via Search
-    const [searchResults, setSearchResults] = useState({});
-
-    //Edit location - location inputs/outputs
-    const [userLocInput, setUserLocInput] = useState();
-    const [userLocList, setUserLocList] = useState({});
-    const [userSelectedLocDetail, setUserSelectedLocDetail] = useState();
-    const [userLatLong, setUserLatLog] = useState();
-
-    //Status for user to edit destination
-    const [editDestStatus, setEditDestStatus] = useState(false);
-
-    //Edit destination - destination inputs/outputs
-    const [userDestList, setUserDestList] = useState([]);
-    const [userSelectedDestDetail, setUserSelectedDestDetail] = useState();
-    const [destLatLong, setDestLatLong] = useState();
-
-    //Routing
-    const [showPolyLine, setShowPolyLine] = useState(false);
-    const [polyLatLong, setPolyLatLong] = useState();
-
-    const handlerChangeInput = (value) => {
-        setUserLocInput(value);
-    }
-
-    const handlerGetSearchResults = (value) => {
-        setSearchResults(value)
-      }
-    
-    const handlerSearch = () =>{
-        setSearchResults([]);
-        funcSearch(userLocInput,1,handlerGetSearchResults)
-        
-    }
-
-    const handlerAddLoc = (id, item) => {
-        const newLocList = [item];
-        setUserLocList(newLocList)
-    }
-    
-    const handlerDeleteLoc = () => {
-        setUserLocList([]);
-    }
-    
-    const handlerConfirmLoc = () => {
-        Object.entries(userLocList).map(([key,value]) => {
-            setUserSelectedLocDetail(value);
-            setUserLatLog([value.LATITUDE, value.LONGITUDE]);
-            setEditLocStatus(false);
-            setEditDestStatus(true);
-        })   
-    }
-
-    const handlerEditLoc = () => {
-        setEditLocStatus(true);
-        setEditDestStatus(false);
-        setShowPolyLine(false);
-    }
-
-    const handlerAddDest = (id, item) => {
-        const newDestList = [item];
-        setUserDestList(newDestList);
-    }
-
-    const handlerDeleteDest = () => {
-        setUserDestList([]);
-    }
-
-    const handlerConfirmDest = () => {
-        Object.entries(userDestList).map(([key,value]) => {
-            setUserSelectedDestDetail(value);
-            setDestLatLong([value.LATITUDE, value.LONGITUDE]);
-            setEditDestStatus(false);
-        })   
-    }
-
-    const handlerEditDest = () => {
-        setEditDestStatus(true);
-        setShowPolyLine(false);
-    }
-
-    //functon to get device location, unused as the output from OneMap is inconsistent
-    const handlerGetGeoLoc = () => {
-        if (!navigator.geolocation) {
-            setGetGeoLocStatus('Geolocation is not supported by your browser');
-          } else {
-            setGetGeoLocStatus('Locating...');
-          }
-          navigator.geolocation.getCurrentPosition((position) => {
-            setGetGeoLocStatus('Location Detected');
-              const newUserLatLong = [position.coords.latitude, position.coords.longitude]
-              setUserLatLog(newUserLatLong);
-              funcGetLocDetails(newUserLatLong, handlerConfirmLoc);
-            }, () => {
-                setGetGeoLocStatus('Unable to retrieve your location');
-            });
-          
-          setSelectGeoLocStatus(true);
-    }
-
-    const handlerRoute = (type) => {
-        funcGetRoute(userLatLong,destLatLong,type, handlerPolyline);
-    }
-
-    const handlerPolyline = (value) => {
-        let polyline = require('@mapbox/polyline');
-        let newPolyLatLong = [...polyline.decode(value,5)]
-        setPolyLatLong(newPolyLatLong);
-        setShowPolyLine(true);
-    }
-
-    let locSearchBar;
-    if (editLocStatus) {
-        locSearchBar = 
-        <div>
-            <div className="search-container">
-            <Input value={userLocInput} label='FROM' onChange={handlerChangeInput}/>
-            {/* <Button label='Use my location' onClick={handlerGetGeoLoc} /> */}
-            <Button label={<AiOutlineSearch size={20}/>} onClick={handlerSearch} />
-            </div>
-        </div>
-    }
-
-    let geoLocEnabler;
-    if (selectGeoLocStatus) {
-        geoLocEnabler = <p>{getGeoLocstatus}</p>
-    }
-
-    let locSelectedTable;
-    if (editLocStatus && Object.keys(userLocList).length > 0) {
-        locSelectedTable = 
-        <div>
-            <TableUserLoc name="Starting Location" list={userLocList} handler={handlerDeleteLoc}/>
-            <div className="search-container">
-            <Button label='Confirm' onClick={handlerConfirmLoc}/>
-            </div>
-        </div>
-    }
-    if (editDestStatus && Object.keys(userDestList).length > 0) {
-        locSelectedTable= 
-        <div>
-            <TableUserLoc name="Destination" list={userDestList} handler={handlerDeleteDest}/>
-            <div className="search-container">
-            <Button label='Confirm' onClick={handlerConfirmDest}/>
-            </div>
-        </div>
-    }
-
-    let locSearchResultsTable;
-    if (editLocStatus && Object.keys(searchResults).length > 0){
-        locSearchResultsTable = <TableSearchResults list={searchResults} handlerAdd={handlerAddLoc}/>
-    }
-    if (editDestStatus && Object.keys(searchResults).length > 0){
-        locSearchResultsTable = <TableSearchResults list={searchResults} handlerAdd={handlerAddDest}/>
-    }
-
-    let destSearchBar;
-    if (editDestStatus) {
-        destSearchBar = 
-        <div>
-            <div className="search-container">
-            <Input value={userLocInput} label='TO' onChange={handlerChangeInput}/>
-            {/* <Button label='Use my location' onClick={handlerGetGeoLoc} /> */}
-            <Button label={<AiOutlineSearch size={20}/>} onClick={handlerSearch} />
-            </div>
-        </div>
-    }
-
-    let routing;
-    if (!editLocStatus && !editDestStatus) {
-        routing = 
-        <div className="search-container">
-            <Button label="Driving Route" onClick={ () => {
-                handlerRoute("drive")
-            }}/>
-            <Button label="Walking Route" onClick={ () => {
-                handlerRoute("walk")
-            }}/>
-        </div>
-    }
-
+function LeafletMap({ 
+    polygon, 
+    LocationDetected, 
+    setLocationDetected, 
+    center, 
+    zoom,
+    userLatLong,
+    destLatLong,
+    showPolyLine,
+    polyLatLong }) {
     return (
         <>
-            <h1>Taxi Availability App</h1>
+            <MapContainer
+                center={[1.343, 103.814]}
+                zoom={12} minZoom={11} maxZoom={18}
+                maxBounds={[[1.514, 104.166], [1.114, 103.581]]}
+                zoomSnap={0.5} zoomDelta={0.5}
+                scrollWheelZoom={true} wheelPxPerZoomLevel={120}
+            >
+            <TileLayer
+                // copyright attribution, do not remove
+                attribution='<img src="https://www.onemap.gov.sg/docs/maps/images/oneMap64-01.png" style="height:14px;width:14px;vertical-align:middle;"> <a href="http://onemap.gov.sg" target="_blank" rel="noreferrer">OneMap</a> | © <a href="http://sla.gov.sg" target="_blank" rel="noreferrer">Singapore Land Authority</a>'
+                url="https://maps-{s}.onemap.sg/v3/Default/{z}/{x}/{y}.png"
+                crossOrigin={true}
+            />
+            <ResetViewControl
+                icon="url(https://raw.githubusercontent.com/se-cohort1-group2/project-ReactJS/71a66e2ba063dc9ae3a652cac95531e249ea5b71/assets/ResetMapView.svg)"
+            />
+                <TaxiStands initialZoom={12}/>
+                <TaxiAvailability initialZoom={12}/>
+                <Polygon pathOptions={{ color: "green" }} positions={polygon}/>
+                <SetView center={center} zoom={zoom}/>
+                <DetectLocationMarker LocationDetected={LocationDetected} setLocationDetected={setLocationDetected}/>
 
-            <div className="container">
-
-                <div className="sideBar">
-                    {!editLocStatus && <TableSelectedLoc name="Selected Starting Location" item={userSelectedLocDetail} handler={handlerEditLoc}/>}
-                    {(!editLocStatus && !editDestStatus) && <TableSelectedLoc name="Selected Destination" item={userSelectedDestDetail} handler={handlerEditDest}/>}
-                    {routing}
-                    {locSearchBar}
-                    {/* {geoLocEnabler} */}
-                    {destSearchBar}
-                    {locSelectedTable}
-                    {locSearchResultsTable}
-                    
-                    
-                </div>
-
-                <div className="leaflet-container">
-                    <MapContainer center={initialPosition} zoom={12}>
-                        <TileLayer 
-                            url="https://maps-{s}.onemap.sg/v3/Default/{z}/{x}/{y}.png"
-                            attribution='<img src="https://www.onemap.gov.sg/docs/maps/images/oneMap64-01.png" style="height:20px;width:20px;"/> OneMap | Map data &copy; contributors, <a href="http://SLA.gov.sg">Singapore Land Authority</a>'/>
-                        {userLatLong && <Marker position={userLatLong} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>}
-                        {destLatLong && <Marker position={destLatLong} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>}
-                        {showPolyLine && <Polyline pathOptions={ {color: 'blue'}} positions={polyLatLong}/>}
-                    </MapContainer>
-                </div>
-
-            </div>
+                {userLatLong && <Marker position={userLatLong} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>}
+                {destLatLong && <Marker position={destLatLong} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>}
+                {showPolyLine && <Polyline pathOptions={ {color: 'blue'}} positions={polyLatLong}/>}
+            
+            </MapContainer>
         </>
     )
 }
