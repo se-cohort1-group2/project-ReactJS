@@ -1,57 +1,56 @@
-import './Main.css'
+import "./Main.css"; 
 
-import { React, useState, useEffect } from "react";
-import { AiOutlineSearch } from 'react-icons/ai'
+import { React, useState, useEffect } from "react"; 
+import { AiOutlineSearch } from "react-icons/ai"; 
 
-//components
-import LeafletMap from "./LeafletMap";
-import Input from "./Input";
-import Button from "./Button";
-import TableSearchResults from "./TableSearchResults";
-import TableUserLoc from "./TableUserLoc";
-import TableSelectedLoc from "./TableSelectedLoc";
+// components
+import LeafletMap from "./LeafletMap"; 
+import Input from "./Input"; 
+import Button from "./Button"; 
+import TableSearchResults from "./TableSearchResults"; 
+import TableUserLoc from "./TableUserLoc"; 
+import TableSelectedLoc from "./TableSelectedLoc"; 
 import DetectLocationButton from "./DetectLocationButton"; 
 
-//functions
-import funcGetPlanningArea from './funcGetPlanningArea';
-import funcSearch from "./funcSearch";
-import funcGetLocDetails from "./funcGetLocDetails";
-import funcGetRoute from "./funcGetRoute";
-
+// functions
+import funcGetPlanningArea from "./funcGetPlanningArea"; 
+import funcSearch from "./funcSearch"; 
+import funcGetLocDetails from "./funcGetLocDetails"; 
+import funcGetRoute from "./funcGetRoute"; 
 
 function Main() {
 
-    const initialPosition =[1.343, 103.814]
+    const initialPosition = [1.343, 103.814]; 
 
-    //Status for user to edit location
-    const [editLocStatus, setEditLocStatus] = useState(true);
+    // Status for user to edit location
+    const [editLocStatus, setEditLocStatus] = useState(true); 
 
-    //Edit location - via device location - statuses
-    const [getGeoLocstatus, setGetGeoLocStatus] = useState();
-    const [selectGeoLocStatus,setSelectGeoLocStatus] = useState(false);
-    
-    //Edit location - via Search
-    const [searchResults, setSearchResults] = useState({});
+    // Edit location - via device location - statuses
+    const [getGeoLocstatus, setGetGeoLocStatus] = useState(); 
+    const [selectGeoLocStatus, setSelectGeoLocStatus] = useState(false); 
 
-    //Edit location - location inputs/outputs
-    const [userLocInput, setUserLocInput] = useState();
-    const [userLocList, setUserLocList] = useState({});
-    const [userSelectedLocDetail, setUserSelectedLocDetail] = useState();
-    const [userLatLong, setUserLatLong] = useState();
+    // Edit location - via Search
+    const [searchResults, setSearchResults] = useState({}); 
 
-    //Status for user to edit destination
-    const [editDestStatus, setEditDestStatus] = useState(false);
+    // Edit location - location inputs/outputs
+    const [userLocInput, setUserLocInput] = useState(); 
+    const [userLocList, setUserLocList] = useState({}); 
+    const [userSelectedLocDetail, setUserSelectedLocDetail] = useState(); 
+    const [userLatLong, setUserLatLong] = useState(); 
 
-    //Edit destination - destination inputs/outputs
-    const [userDestList, setUserDestList] = useState([]);
-    const [userSelectedDestDetail, setUserSelectedDestDetail] = useState();
-    const [destLatLong, setDestLatLong] = useState();
+    // Status for user to edit destination
+    const [editDestStatus, setEditDestStatus] = useState(false); 
 
-    //Routing
-    const [showPolyLine, setShowPolyLine] = useState(false);
-    const [polyLatLong, setPolyLatLong] = useState();
+    // Edit destination - destination inputs/outputs
+    const [userDestList, setUserDestList] = useState([]); 
+    const [userSelectedDestDetail, setUserSelectedDestDetail] = useState(); 
+    const [destLatLong, setDestLatLong] = useState(); 
 
-    //Planning areas
+    // Routing
+    const [showPolyLine, setShowPolyLine] = useState(false); 
+    const [polyLatLong, setPolyLatLong] = useState(); 
+
+    // Planning Areas
     const [AreaPolygonList, setAreaPolygonList] = useState([]); 
     const [polygon, setPolygon] = useState([]); 
     const [center, setCenter] = useState([1.343, 103.814]); 
@@ -61,74 +60,72 @@ function Main() {
     const [SelectedOption, setSelectedOption] = useState(); 
     const [LocationDetected, setLocationDetected] = useState(false); 
 
-    
-    const handlerSearch = () =>{
-        setSearchResults([]);
-        funcSearch(userLocInput,1,setSearchResults)
-        
+    const handlerSearch = () => {
+        setSearchResults([]); 
+        funcSearch(userLocInput, 1, setSearchResults); 
     }
 
     const handlerAddLoc = (id, item) => {
-        const newLocList = [item];
-        setUserLocList(newLocList)
+        const newLocList = [item]; 
+        setUserLocList(newLocList); 
     }
-    
+
     const handlerDeleteLoc = () => {
-        setUserLocList([]);
+        setUserLocList([]); 
     }
-    
+
     const handlerConfirmLoc = () => {
-        Object.entries(userLocList).map(([key,value]) => {
-            setUserSelectedLocDetail(value);
-            setUserLatLong([value.LATITUDE, value.LONGITUDE]);
-            setEditLocStatus(false);
-            setEditDestStatus(true);
-        })   
+        Object.entries(userLocList).map(([key, value]) => {
+            setUserSelectedLocDetail(value); 
+            setUserLatLong([value.LATITUDE, value.LONGITUDE]); 
+            setEditLocStatus(false); 
+            setEditDestStatus(true); 
+        })
     }
 
     const handlerEditLoc = () => {
-        setEditLocStatus(true);
-        setEditDestStatus(false);
-        setShowPolyLine(false);
+        setEditLocStatus(true); 
+        setEditDestStatus(false); 
+        setShowPolyLine(false); 
     }
 
     const handlerAddDest = (id, item) => {
-        const newDestList = [item];
-        setUserDestList(newDestList);
+        const newDestList = [item]; 
+        setUserDestList(newDestList); 
     }
 
     const handlerDeleteDest = () => {
-        setUserDestList([]);
+        setUserDestList([]); 
     }
 
     const handlerConfirmDest = () => {
-        Object.entries(userDestList).map(([key,value]) => {
-            setUserSelectedDestDetail(value);
-            setDestLatLong([value.LATITUDE, value.LONGITUDE]);
-            setEditDestStatus(false);
-        })   
+        Object.entries(userDestList).map(([key, value]) => {
+            setUserSelectedDestDetail(value); 
+            setDestLatLong([value.LATITUDE, value.LONGITUDE]); 
+            setEditDestStatus(false); 
+        })
     }
 
     const handlerEditDest = () => {
-        setEditDestStatus(true);
-        setShowPolyLine(false);
+        setEditDestStatus(true); 
+        setShowPolyLine(false); 
     }
 
     const handlerRoute = (type) => {
-        funcGetRoute(userLatLong,destLatLong,type, handlerPolyline);
+        funcGetRoute(userLatLong, destLatLong, type, handlerPolyline); 
     }
 
     const handlerPolyline = (value) => {
-        let polyline = require('@mapbox/polyline');
-        let newPolyLatLong = [...polyline.decode(value,5)]
-        setPolyLatLong(newPolyLatLong);
-        setShowPolyLine(true);
+        let polyline = require("@mapbox/polyline"); 
+        let newPolyLatLong = [...polyline.decode(value, 5)]
+        setPolyLatLong(newPolyLatLong); 
+        setShowPolyLine(true); 
     }
 
     let initialRender = true; 
     useEffect(() => {
         if (initialRender) {
-            funcGetPlanningArea(setAreaPolygonList);
+            funcGetPlanningArea(setAreaPolygonList); 
             // eslint-disable-next-line
             initialRender = false; 
         }
@@ -151,70 +148,69 @@ function Main() {
         setZoom(13.5); 
     }
 
-
-    let locSearchBar;
+    let locSearchBar; 
     if (editLocStatus) {
         locSearchBar = 
         <div>
             <div className="search-container">
-            <Input value={userLocInput} label='FROM' onChange={setUserLocInput}/>
-            <Button label={<AiOutlineSearch size={20}/>} onClick={handlerSearch} />
+                <Input value={userLocInput} label="FROM" onChange={setUserLocInput}/>
+                <Button label={<AiOutlineSearch size={20}/>} onClick={handlerSearch}/>
             </div>
         </div>
     }
 
-    let geoLocEnabler;
+    let geoLocEnabler; 
     if (selectGeoLocStatus) {
         geoLocEnabler = <p>{getGeoLocstatus}</p>
     }
 
-    let locSelectedTable;
+    let locSelectedTable; 
     if (editLocStatus && Object.keys(userLocList).length > 0) {
         locSelectedTable = 
         <div>
             <TableUserLoc name="Starting Location" list={userLocList} handler={handlerDeleteLoc}/>
             <div className="search-container">
-            <Button label='Confirm' onClick={handlerConfirmLoc}/>
+                <Button label="Confirm" onClick={handlerConfirmLoc}/>
             </div>
         </div>
     }
     if (editDestStatus && Object.keys(userDestList).length > 0) {
-        locSelectedTable= 
+        locSelectedTable = 
         <div>
             <TableUserLoc name="Destination" list={userDestList} handler={handlerDeleteDest}/>
             <div className="search-container">
-            <Button label='Confirm' onClick={handlerConfirmDest}/>
+                <Button label="Confirm" onClick={handlerConfirmDest}/>
             </div>
         </div>
     }
 
-    let locSearchResultsTable;
-    if (editLocStatus && Object.keys(searchResults).length > 0){
+    let locSearchResultsTable; 
+    if (editLocStatus && Object.keys(searchResults).length > 0) {
         locSearchResultsTable = <TableSearchResults list={searchResults} handlerAdd={handlerAddLoc}/>
     }
-    if (editDestStatus && Object.keys(searchResults).length > 0){
+    if (editDestStatus && Object.keys(searchResults).length > 0) {
         locSearchResultsTable = <TableSearchResults list={searchResults} handlerAdd={handlerAddDest}/>
     }
 
-    let destSearchBar;
+    let destSearchBar; 
     if (editDestStatus) {
         destSearchBar = 
         <div>
             <div className="search-container">
-            <Input value={userLocInput} label='TO' onChange={setUserLocInput}/>
-            <Button label={<AiOutlineSearch size={20}/>} onClick={handlerSearch} />
+                <Input value={userLocInput} label="TO" onChange={setUserLocInput}/>
+                <Button label={<AiOutlineSearch size={20}/>} onClick={handlerSearch}/>
             </div>
         </div>
     }
 
-    let routing;
+    let routing; 
     if (!editLocStatus && !editDestStatus) {
         routing = 
         <div className="search-container">
-            <Button label="Driving Route" onClick={ () => {
+            <Button label="Driving Route" onClick={() => {
                 handlerRoute("drive")
             }}/>
-            <Button label="Walking Route" onClick={ () => {
+            <Button label="Walking Route" onClick={() => {
                 handlerRoute("walk")
             }}/>
         </div>
@@ -227,19 +223,18 @@ function Main() {
             <div className="container">
 
                 <div className="sideBar">
-                                    
-                    <div className='search-container'>
+                    <div className="search-container">
                         <select
-                                style={{margin: "2vh 10px 0 2%"}}
-                                value={SelectedOption}
-                                onChange={(e) => {
-                                    handlerSelectArea(e.target.value)
-                                }}
-                            >
-                                <option value="" selected disabled>-- Select Area --</option>
-                                {AreaPolygonList.map(o => (
-                                    <option key={o.pln_area_n} value={o.pln_area_n}>{o.pln_area_n}</option>
-                                ))}
+                            style={{margin: "5px 10px 0 0", padding: "0 0 0 5px"}}
+                            value={SelectedOption}
+                            onChange={(e) => {
+                                handlerSelectArea(e.target.value)
+                            }}
+                        >
+                            <option value="" selected disabled>-- Select Area --</option>
+                            {AreaPolygonList.map(o => (
+                                <option key={o.pln_area_n} value={o.pln_area_n}>{o.pln_area_n}</option>
+                            ))}
                         </select>
                         <DetectLocationButton setLocationDetected={setLocationDetected} setUserLatLong={setUserLatLong}/>
                     </div>
@@ -251,15 +246,14 @@ function Main() {
                     {destSearchBar}
                     {locSelectedTable}
                     {locSearchResultsTable}
-                    
-                    
                 </div>
 
                 <div className="leaflet-container">
-                    <LeafletMap polygon={polygon}
-                        LocationDetected={LocationDetected} 
+                    <LeafletMap
+                        polygon={polygon}
+                        LocationDetected={LocationDetected}
                         setLocationDetected={setLocationDetected}
-                        center={center} 
+                        center={center}
                         zoom={zoom}
                         userLatLong={userLatLong}
                         destLatLong={destLatLong}
