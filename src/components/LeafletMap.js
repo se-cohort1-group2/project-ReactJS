@@ -1,12 +1,15 @@
 import "./LeafletMap.css"; 
 
-import { MapContainer, TileLayer } from "react-leaflet"; 
+import { MapContainer, TileLayer, Polygon } from "react-leaflet"; 
 import ResetViewControl from "@20tab/react-leaflet-resetview"; 
 
 import TaxiStands from "./TaxiStands"; 
 import TaxiAvailability from "./TaxiAvailability"; 
 
-function LeafletMap() {
+import SetView from "./SetView"; 
+import DetectLocationMarker from "./DetectLocationMarker"; 
+
+function LeafletMap({ polygon, LocationDetected, setLocationDetected, center, zoom }) {
     return (
         <>
             <MapContainer
@@ -27,6 +30,9 @@ function LeafletMap() {
             />
                 <TaxiStands initialZoom={12}/>
                 <TaxiAvailability initialZoom={12}/>
+                <Polygon pathOptions={{ color: "purple" }} positions={polygon}/>
+                <SetView center={center} zoom={zoom}/>
+                <DetectLocationMarker LocationDetected={LocationDetected} setLocationDetected={setLocationDetected}/>
             </MapContainer>
         </>
     )
