@@ -1,9 +1,6 @@
 import './Main.css'
 
 import { React, useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Polyline } from "react-leaflet"; 
-import markerIconPng from "leaflet/dist/images/marker-icon.png"
-import {Icon} from 'leaflet'
 import { AiOutlineSearch } from 'react-icons/ai'
 
 //components
@@ -16,7 +13,7 @@ import TableSelectedLoc from "./TableSelectedLoc";
 import DetectLocationButton from "./DetectLocationButton"; 
 
 //functions
-import OneMapAPI from "../api/OneMapAPI"; 
+import funcGetPlanningArea from './funcGetPlanningArea';
 import funcSearch from "./funcSearch";
 import funcGetLocDetails from "./funcGetLocDetails";
 import funcGetRoute from "./funcGetRoute";
@@ -40,7 +37,7 @@ function Main() {
     const [userLocInput, setUserLocInput] = useState();
     const [userLocList, setUserLocList] = useState({});
     const [userSelectedLocDetail, setUserSelectedLocDetail] = useState();
-    const [userLatLong, setUserLatLog] = useState();
+    const [userLatLong, setUserLatLong] = useState();
 
     //Status for user to edit destination
     const [editDestStatus, setEditDestStatus] = useState(false);
@@ -65,18 +62,9 @@ function Main() {
     const [LocationDetected, setLocationDetected] = useState(false); 
 
     
-
-    const handlerChangeInput = (value) => {
-        setUserLocInput(value);
-    }
-
-    const handlerGetSearchResults = (value) => {
-        setSearchResults(value)
-      }
-    
     const handlerSearch = () =>{
         setSearchResults([]);
-        funcSearch(userLocInput,1,handlerGetSearchResults)
+        funcSearch(userLocInput,1,setSearchResults)
         
     }
 
@@ -92,7 +80,7 @@ function Main() {
     const handlerConfirmLoc = () => {
         Object.entries(userLocList).map(([key,value]) => {
             setUserSelectedLocDetail(value);
-            setUserLatLog([value.LATITUDE, value.LONGITUDE]);
+            setUserLatLong([value.LATITUDE, value.LONGITUDE]);
             setEditLocStatus(false);
             setEditDestStatus(true);
         })   
@@ -126,25 +114,6 @@ function Main() {
         setShowPolyLine(false);
     }
 
-    //functon to get device location, unused as the output from OneMap is inconsistent
-    const handlerGetGeoLoc = () => {
-        if (!navigator.geolocation) {
-            setGetGeoLocStatus('Geolocation is not supported by your browser');
-          } else {
-            setGetGeoLocStatus('Locating...');
-          }
-          navigator.geolocation.getCurrentPosition((position) => {
-            setGetGeoLocStatus('Location Detected');
-              const newUserLatLong = [position.coords.latitude, position.coords.longitude]
-              setUserLatLog(newUserLatLong);
-              funcGetLocDetails(newUserLatLong, handlerConfirmLoc);
-            }, () => {
-                setGetGeoLocStatus('Unable to retrieve your location');
-            });
-          
-          setSelectGeoLocStatus(true);
-    }
-
     const handlerRoute = (type) => {
         funcGetRoute(userLatLong,destLatLong,type, handlerPolyline);
     }
@@ -159,26 +128,11 @@ function Main() {
     let initialRender = true; 
     useEffect(() => {
         if (initialRender) {
-            apiGetPlanningArea(); 
+            funcGetPlanningArea(setAreaPolygonList);
             // eslint-disable-next-line
             initialRender = false; 
         }
     }, [])
-
-    const OneMapToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjk2NTYsInVzZXJfaWQiOjk2NTYsImVtYWlsIjoicGhvZWJleWtxQGdtYWlsLmNvbSIsImZvcmV2ZXIiOmZhbHNlLCJpc3MiOiJodHRwOlwvXC9vbTIuZGZlLm9uZW1hcC5zZ1wvYXBpXC92MlwvdXNlclwvc2Vzc2lvbiIsImlhdCI6MTY3Mzg2Mjg2NSwiZXhwIjoxNjc0Mjk0ODY1LCJuYmYiOjE2NzM4NjI4NjUsImp0aSI6ImIyMTc1YmJjZTE0N2FiMmZjOTJkZmEyZGNiZjczMzBmIn0.F5hSL5YmIbkY2isTnyaSOPZHRKPjeR7vjnwPwyWWbfM"
-    // token expires Thursday 19th Jan 2023
-
-    const apiGetPlanningArea = async() => {
-        try {
-            const AreaPolygonData = await OneMapAPI.get(`/privateapi/popapi/getAllPlanningarea?token=${OneMapToken}`)
-            AreaPolygonData.data.sort((a, b) => a.pln_area_n.localeCompare(b.pln_area_n))
-            const removedOTHERS = AreaPolygonData.data.filter(area => area.pln_area_n !== "OTHERS")
-            setAreaPolygonList(removedOTHERS)
-            console.log(AreaPolygonData.data)
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
 
     const handlerSelectArea = (id) => {
         const foundIndex = AreaPolygonList.findIndex((item) => item.pln_area_n === id); 
@@ -197,16 +151,13 @@ function Main() {
         setZoom(13.5); 
     }
 
-    
-
 
     let locSearchBar;
     if (editLocStatus) {
         locSearchBar = 
         <div>
             <div className="search-container">
-            <Input value={userLocInput} label='FROM' onChange={handlerChangeInput}/>
-            {/* <Button label='Use my location' onClick={handlerGetGeoLoc} /> */}
+            <Input value={userLocInput} label='FROM' onChange={setUserLocInput}/>
             <Button label={<AiOutlineSearch size={20}/>} onClick={handlerSearch} />
             </div>
         </div>
@@ -250,8 +201,7 @@ function Main() {
         destSearchBar = 
         <div>
             <div className="search-container">
-            <Input value={userLocInput} label='TO' onChange={handlerChangeInput}/>
-            {/* <Button label='Use my location' onClick={handlerGetGeoLoc} /> */}
+            <Input value={userLocInput} label='TO' onChange={setUserLocInput}/>
             <Button label={<AiOutlineSearch size={20}/>} onClick={handlerSearch} />
             </div>
         </div>
@@ -277,19 +227,22 @@ function Main() {
             <div className="container">
 
                 <div className="sideBar">
-                    <select
-                        style={{margin: "2vh 10px 0 2%"}}
-                        value={SelectedOption}
-                        onChange={(e) => {
-                            handlerSelectArea(e.target.value)
-                        }}
-                    >
-                        <option value="" selected disabled>-- Select Area --</option>
-                        {AreaPolygonList.map(o => (
-                            <option key={o.pln_area_n} value={o.pln_area_n}>{o.pln_area_n}</option>
-                        ))}
-                    </select>
-                    <DetectLocationButton setLocationDetected={setLocationDetected}/>
+                                    
+                    <div className='search-container'>
+                        <select
+                                style={{margin: "2vh 10px 0 2%"}}
+                                value={SelectedOption}
+                                onChange={(e) => {
+                                    handlerSelectArea(e.target.value)
+                                }}
+                            >
+                                <option value="" selected disabled>-- Select Area --</option>
+                                {AreaPolygonList.map(o => (
+                                    <option key={o.pln_area_n} value={o.pln_area_n}>{o.pln_area_n}</option>
+                                ))}
+                        </select>
+                        <DetectLocationButton setLocationDetected={setLocationDetected} setUserLatLong={setUserLatLong}/>
+                    </div>
                     {!editLocStatus && <TableSelectedLoc name="Selected Starting Location" item={userSelectedLocDetail} handler={handlerEditLoc}/>}
                     {(!editLocStatus && !editDestStatus) && <TableSelectedLoc name="Selected Destination" item={userSelectedDestDetail} handler={handlerEditDest}/>}
                     {routing}
