@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer, Polygon, Marker, Polyline } from "react-leaflet"; 
 import ResetViewControl from "@20tab/react-leaflet-resetview"; 
-import markerIconPng from "leaflet/dist/images/marker-icon.png"
-import {Icon} from 'leaflet'
+import markerIconPng from "leaflet/dist/images/marker-icon.png"; 
+import {Icon} from "leaflet"; 
 
 import TaxiStands from "./TaxiStands"; 
 import TaxiAvailability from "./TaxiAvailability"; 
@@ -9,16 +9,17 @@ import TaxiAvailability from "./TaxiAvailability";
 import SetView from "./SetView"; 
 import DetectLocationMarker from "./DetectLocationMarker"; 
 
-function LeafletMap({ 
+function LeafletMap({
     polygon, 
     LocationDetected, 
     setLocationDetected, 
     center, 
-    zoom,
-    userLatLong,
-    destLatLong,
-    showPolyLine,
-    polyLatLong }) {
+    zoom, 
+    userLatLong, 
+    destLatLong, 
+    showPolyLine, 
+    polyLatLong
+}) {
     return (
         <>
             <MapContainer
@@ -42,11 +43,9 @@ function LeafletMap({
                 <Polygon pathOptions={{ color: "green" }} positions={polygon}/>
                 <SetView center={center} zoom={zoom}/>
                 <DetectLocationMarker LocationDetected={LocationDetected} setLocationDetected={setLocationDetected}/>
-
                 {userLatLong && <Marker position={userLatLong} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>}
                 {destLatLong && <Marker position={destLatLong} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>}
-                {showPolyLine && <Polyline pathOptions={ {color: 'blue'}} positions={polyLatLong}/>}
-            
+                {showPolyLine && <Polyline pathOptions={{ color: "blue" }} positions={polyLatLong}/>}
             </MapContainer>
         </>
     )

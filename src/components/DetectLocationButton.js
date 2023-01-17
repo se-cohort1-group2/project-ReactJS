@@ -1,4 +1,5 @@
-import Button from "./Button";
+import Button from "./Button"; 
+
 function DetectLocationButton({ setLocationDetected }) {
 
     const handleClick = () => {

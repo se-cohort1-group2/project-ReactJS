@@ -1,37 +1,36 @@
 .leaflet-container {
-    width: 100%;
-    height: 90vh;
-    margin:0 1rem 1rem 0;
+    width: 100%; 
+    height: 90vh; 
+    margin: 0 1rem 1rem 0; 
 }
-
 
 .container {
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
+    display: flex; 
+    flex-direction: row; 
+    justify-content: left; 
 }
-  
+
 .sideBar {
-    display: flex;
-    flex-flow: column;
-    width: 550px;
+    display: flex; 
+    flex-flow: column; 
+    width: 550px; 
 }
 
 .search-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: right;
+    display: flex; 
+    flex-direction: row; 
+    justify-content: right; 
 }
 
 .nav {
-    background-color: #cae2f5;
-    padding: 0 1rem;
+    background-color: #cae2f5; 
+    padding: 0 1rem; 
 }
 
 h1 {
-    text-align: center;
+    text-align: center; 
 }
 
-select{
-    width:250px;
+select {
+    width: 250px; 
 }
