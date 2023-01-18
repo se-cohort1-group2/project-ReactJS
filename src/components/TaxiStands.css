@@ -1,0 +1,20 @@
+.popup-TaxiStand {
+    font-size: 14px; 
+}
+
+.popup-TaxiStand-header {
+    background-color: #ee8855; 
+    color: white; 
+    letter-spacing: 0.5px; 
+    font-size: 18px; 
+    font-weight: bold; 
+    margin: -14px -20px 10px -20px; 
+    padding: 10px 0 5px 20px; 
+    border-radius: 10px 10px 0 0; 
+}
+
+.popup-TaxiStand-code {
+    font-size: 20px; 
+    font-weight: bold; 
+    margin: 0 0 2px 0; 
+}

@@ -1,0 +1,15 @@
+ul {
+    list-style-type: none; 
+    margin: 0; 
+    padding: 0; 
+}
+
+li {
+    white-space: nowrap; 
+    background-color: white; 
+}
+
+.popup-TaxiAvailable-GetAddress {
+    font-weight: bold; 
+    margin: 15px 0 0 0; 
+}
