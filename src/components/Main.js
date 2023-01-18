@@ -21,14 +21,8 @@ import funcGetRoute from "./funcGetRoute";
 
 function Main() {
 
-    const initialPosition = [1.343, 103.814]; 
-
     // Status for user to edit location
     const [editLocStatus, setEditLocStatus] = useState(true); 
-
-    // Edit location - via device location - statuses
-    const [getGeoLocstatus, setGetGeoLocStatus] = useState(); 
-    const [selectGeoLocStatus, setSelectGeoLocStatus] = useState(false); 
 
     // Edit location - via Search
     const [searchResults, setSearchResults] = useState({}); 
@@ -89,6 +83,16 @@ function Main() {
         setEditDestStatus(false); 
         setShowPolyLine(false); 
     }
+
+    const handlerGetDetectedLoc = ([lat,long]) => {
+        console.log([lat,long]);
+        funcGetLocDetails([lat, long], handlerAddLoc)
+        setEditLocStatus(true);
+    }
+
+    // const handlertest = (value) => {
+    //     console.log(value);
+    // }
 
     const handlerAddDest = (id, item) => {
         const newDestList = [item]; 
@@ -164,11 +168,6 @@ function Main() {
                 <Button label={<AiOutlineSearch size={20}/>} onClick={handlerSearch}/>
             </div>
         </div>
-    }
-
-    let geoLocEnabler; 
-    if (selectGeoLocStatus) {
-        geoLocEnabler = <p>{getGeoLocstatus}</p>
     }
 
     let locSelectedTable; 
@@ -248,7 +247,7 @@ function Main() {
                                 <option key={o.pln_area_n} value={o.pln_area_n}>{o.pln_area_n}</option>
                             ))}
                         </select>
-                        <DetectLocationButton setLocationDetected={setLocationDetected} setUserLatLong={setUserLatLong}/>
+                        <DetectLocationButton setLocationDetected={setLocationDetected} handlerGetDetectedLoc={handlerGetDetectedLoc}/>
                     </div>
                     <div className="routing-container">
                         {!editLocStatus && <TableSelectedLoc name="Selected Starting Location" item={userSelectedLocDetail} handler={handlerEditLoc}/>}
