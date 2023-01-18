@@ -1,3 +1,5 @@
+import Button from "./Button"; 
+
 function DetectLocationButton({ setLocationDetected }) {
 
     const handleClick = () => {
@@ -9,7 +11,7 @@ function DetectLocationButton({ setLocationDetected }) {
 
     return (
         <>
-            <button onClick={handleClick}>Detect Location</button>
+            <Button label="Detect Location" onClick={handleClick}/>
         </>
     )
 }

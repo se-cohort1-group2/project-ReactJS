@@ -1,13 +1,11 @@
 import "./App.css"; 
 
-// import LeafletMap from "./components/LeafletMap"; 
-import SelectArea from "./components/SelectArea"; 
+import Main from "./components/Main"; 
 
 function App() {
     return (
         <>
-            {/* <LeafletMap/> */}
-            <SelectArea/>
+            <Main/>
         </>
     )
 }
