@@ -151,7 +151,7 @@ function Main() {
         setPolygon(swapCoord);
         setCenter(swapCoord[0][0][0][0][0]);
         setUserLatLong(swapCoord[0][0][0][0][0]);
-        setZoom(16);
+        setZoom(17);
     }
 
     let locSearchBar;
