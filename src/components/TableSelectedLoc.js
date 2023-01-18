@@ -5,11 +5,11 @@ function TableSelectedLoc ({name, item, handler}) {
 
     return(
         <div>
-            <table className= {styles.table}>
+            <table className= {styles.table} style={{ margin: "-5px 0 0 0" }}>
                 <thead>
                     <tr>
                         <th></th>
-                        <th>{name}</th>
+                        <th style={{ padding: "15px 10px 10px 5px" }}>{name}</th>
                     </tr>
                 </thead>
                 <tbody>
