@@ -8,6 +8,7 @@
   border: 2px solid transparent;
   color: white;
   transition-duration: 0.3s;
+  white-space: nowrap;
 }
 .button:hover {
   background-color: white;
