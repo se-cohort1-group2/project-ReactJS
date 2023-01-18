@@ -28,7 +28,7 @@ const CurCoord = (props) => {
   return (
     <div className="App">
       <button onClick={getLocation}>Get Location</button>
-      <h1>Present Coordinates</h1>
+      <h2>Present Coordinates</h2>
       <p>{status}</p>
       {lat && <p>Latitude: {lat}</p>}
       {lng && <p>Longitude: {lng}</p>}
