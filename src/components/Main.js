@@ -1,4 +1,5 @@
 import "./Main.css"; 
+import styles from "./Table.module.css"; 
 
 import { React, useState, useEffect } from "react"; 
 import { AiOutlineSearch } from "react-icons/ai"; 
@@ -152,6 +153,12 @@ function Main() {
     if (editLocStatus) {
         locSearchBar = 
         <div>
+            <table className={styles.table} style={{ margin: "-5px 0 0 0" }}>
+                <thead><tr>
+                    <th></th>
+                    <th style={{ padding: "15px 10px 10px 15px" }}>Enter Starting Location</th>
+                </tr></thead>
+            </table>
             <div className="search-container">
                 <Input value={userLocInput} label="FROM" onChange={setUserLocInput}/>
                 <Button label={<AiOutlineSearch size={20}/>} onClick={handlerSearch}/>
@@ -196,6 +203,12 @@ function Main() {
     if (editDestStatus) {
         destSearchBar = 
         <div>
+            <table className={styles.table}>
+                <thead><tr>
+                    <th></th>
+                    <th>Enter Destination</th>
+                </tr></thead>
+            </table>
             <div className="search-container">
                 <Input value={userLocInput} label="TO" onChange={setUserLocInput}/>
                 <Button label={<AiOutlineSearch size={20}/>} onClick={handlerSearch}/>
@@ -218,14 +231,13 @@ function Main() {
 
     return (
         <>
-            <h1>Taxi Availability App</h1>
+            <h1 className="title">Taxi Availability App</h1>
 
-            <div className="container">
+            <div className="main-container">
 
                 <div className="sideBar">
-                    <div className="search-container">
+                    <div className="select-detect-container">
                         <select
-                            style={{margin: "5px 10px 0 0", padding: "0 0 0 5px"}}
                             value={SelectedOption}
                             onChange={(e) => {
                                 handlerSelectArea(e.target.value)
@@ -238,14 +250,16 @@ function Main() {
                         </select>
                         <DetectLocationButton setLocationDetected={setLocationDetected} setUserLatLong={setUserLatLong}/>
                     </div>
-                    {!editLocStatus && <TableSelectedLoc name="Selected Starting Location" item={userSelectedLocDetail} handler={handlerEditLoc}/>}
-                    {(!editLocStatus && !editDestStatus) && <TableSelectedLoc name="Selected Destination" item={userSelectedDestDetail} handler={handlerEditDest}/>}
-                    {routing}
-                    {locSearchBar}
-                    {/* {geoLocEnabler} */}
-                    {destSearchBar}
-                    {locSelectedTable}
-                    {locSearchResultsTable}
+                    <div className="routing-container">
+                        {!editLocStatus && <TableSelectedLoc name="Selected Starting Location" item={userSelectedLocDetail} handler={handlerEditLoc}/>}
+                        {(!editLocStatus && !editDestStatus) && <TableSelectedLoc name="Selected Destination" item={userSelectedDestDetail} handler={handlerEditDest}/>}
+                        {routing}
+                        {locSearchBar}
+                        {/* {geoLocEnabler} */}
+                        {destSearchBar}
+                        {locSelectedTable}
+                        {locSearchResultsTable}
+                    </div>
                 </div>
 
                 <div className="leaflet-container">
