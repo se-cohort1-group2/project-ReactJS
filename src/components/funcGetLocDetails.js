@@ -18,9 +18,7 @@ function funcGetLocDetails([lat,long], handler){
             const response = await OneMapAPI.get(`/privateapi/commonsvc/revgeocode?location=${searchParams.latitude},${searchParams.longitude}&token=${searchParams.token}&buffer=${searchParams.buffer}&addressType=${searchParams.addressType}`)
 
             const convertResults = {...response.data.GeocodeInfo}
-            console.log(convertResults);
-
-            
+            console.log(convertResults);     
 
 
             for (const [key, details] of Object.entries(convertResults)) {
@@ -43,10 +41,10 @@ function funcGetLocDetails([lat,long], handler){
                     
                     let address;
 
-                    if (result.BLOCK !== null || result.BLOCK != "null" || result.BLOCK !== "NIL") address = result.BLOCK
-                    if (result.ROAD !== null || result.ROAD != "null" || result.ROAD !== "NIL") address = address +" "+ result.ROAD
-                    if (result.BUILDINGNAME !== null || result.BUILDINGNAME != "null"|| result.BUILDINGNAME !== "NIL") address = address +" "+ result.BUILDING
-                    if (result.POSTALCODE !== null || result.POSTALCODE != "null" || result.POSTALCODE !== "NIL") address = address + " SINGAPORE " + result.POSTALCODE
+                    if (result.BLOCK != null || result.BLOCK != "null" || result.BLOCK != "NIL") address = result.BLOCK
+                    if (result.ROAD != null || result.ROAD != "null" || result.ROAD != "NIL") address = address +" "+ result.ROAD
+                    if (result.BUILDINGNAME != null || result.BUILDINGNAME != "null"|| result.BUILDINGNAME != "NIL") address = address +" "+ result.BUILDING
+                    if (result.POSTALCODE != null || result.POSTALCODE != "null" || result.POSTALCODE != "NIL"|| result.POSTALCODE !== "") address = address + " SINGAPORE " + result.POSTALCODE
                     
                     address = address.replace("undefined", "")
                     address = address.replace("null", "")
@@ -54,11 +52,11 @@ function funcGetLocDetails([lat,long], handler){
                     result.ADDRESS = address;
                 }
 
-                resultList = [...resultList,result]
+                resultList= [...resultList,result]
               }
 
             console.log(resultList);
-            handler(resultList);
+            handler(0,resultList[0]);
         
         } catch (error) {
             console.log(error.message);
