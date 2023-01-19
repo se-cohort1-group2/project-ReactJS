@@ -150,8 +150,7 @@ function Main() {
         })
         setPolygon(swapCoord);
         setCenter(swapCoord[0][0][0][0][0]);
-        setUserLatLong(swapCoord[0][0][0][0][0]);
-        setZoom(17);
+        setZoom(13);
     }
 
     let locSearchBar;
