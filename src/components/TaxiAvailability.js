@@ -6,8 +6,9 @@ import { Icon } from "leaflet";
 
 import TaxiAvailableIcon from "../images/TaxiAvailableIcon.svg";
 import GetAddress from "./GetAddress";
+import Button from "./Button";
 
-function TaxiAvailability({ initialZoom, taxiAvailabilityList }) {
+function TaxiAvailability({ initialZoom, taxiAvailabilityList, handler }) {
 
     const [ActivePopup, setActivePopup] = useState(null);
 
@@ -42,6 +43,9 @@ function TaxiAvailability({ initialZoom, taxiAvailabilityList }) {
                                     <div className="popup-TaxiAvailable">
                                         <div className="popup-TaxiAvailable-header">Taxi Available</div>
                                         <GetAddress Lat={item.Latitude} Long={item.Longitude} />
+                                        <Button label="Get Location" onClick={() => {
+                                            handler(item)
+                                        }}/>
                                     </div>
                                 </Popup>
                             </Marker>
