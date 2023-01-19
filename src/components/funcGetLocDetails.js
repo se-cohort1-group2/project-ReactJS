@@ -41,10 +41,10 @@ function funcGetLocDetails([lat,long], handler){
                     
                     let address;
 
-                    if (result.BLOCK != null || result.BLOCK != "null" || result.BLOCK != "NIL") address = result.BLOCK
-                    if (result.ROAD != null || result.ROAD != "null" || result.ROAD != "NIL") address = address +" "+ result.ROAD
-                    if (result.BUILDINGNAME != null || result.BUILDINGNAME != "null"|| result.BUILDINGNAME != "NIL") address = address +" "+ result.BUILDING
-                    if (result.POSTALCODE != null || result.POSTALCODE != "null" || result.POSTALCODE != "NIL"|| result.POSTALCODE !== "") address = address + " SINGAPORE " + result.POSTALCODE
+                    if (result.BLOCK !== null && result.BLOCK !== "null" && result.BLOCK !== "NIL") address = result.BLOCK
+                    if (result.ROAD !== null && result.ROAD !== "null" && result.ROAD !== "NIL") address = address +" "+ result.ROAD
+                    if (result.BUILDINGNAME !== null && result.BUILDINGNAME !== "null"&& result.BUILDINGNAME !== "NIL") address = address +" "+ result.BUILDING
+                    if (result.POSTALCODE !== null && result.POSTALCODE !== "null" && result.POSTALCODE !== "NIL"&& result.POSTALCODE !== "") address = address + " SINGAPORE " + result.POSTALCODE
                     
                     address = address.replace("undefined", "")
                     address = address.replace("null", "")

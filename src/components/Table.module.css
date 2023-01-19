@@ -7,7 +7,7 @@
   width: 100%;
 }
 .table thead tr {
-  background-color: lightgrey;
+  background-color: lightgray;
   color: black;
   text-align: left;
 }
@@ -60,7 +60,7 @@
   background-color: white;
   border-radius: 0.7rem;
   border: 0px;
-  color: orange;
+  color: lightcoral;
   transition-duration: 0.3s;
 }
 
