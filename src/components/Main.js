@@ -107,9 +107,11 @@ function Main() {
         setEditLocStatus(true);
     }
 
-    // const handlertest = (value) => {
-    //     console.log(value);
-    // }
+    const handlerGetClickedDest = (value) => {
+        console.log(value);
+        funcGetLocDetails([value.Latitude, value.Longitude], handlerAddDest)
+        setEditDestStatus(true);
+    }
 
     const handlerAddDest = (id, item) => {
         const newDestList = [item];
@@ -310,6 +312,7 @@ function Main() {
                         radius={radius}
                         flyToZoom={flyToZoom}
                         taxiAvailabilityList={taxiAvailabilityList}
+                        handler={handlerGetClickedDest}
                     />
                 </div>
 

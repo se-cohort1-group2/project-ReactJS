@@ -5,9 +5,10 @@ import { Marker, Popup, useMapEvents } from "react-leaflet";
 import { Icon } from "leaflet"; 
 
 import TaxiStandsJSON from "./TaxiStands.json"; 
-import TaxiStandIcon from "../images/TaxiStandIcon.svg"; 
+import TaxiStandIcon from "../images/TaxiStandIcon.svg";
+import Button from "./Button"; 
 
-function TaxiStands({ initialZoom }) {
+function TaxiStands({ initialZoom, handler }) {
 
     const [ActivePopup, setActivePopup] = useState(null); 
 
@@ -44,6 +45,9 @@ function TaxiStands({ initialZoom }) {
                                 <div className="popup-TaxiStand-code">{item.TaxiCode}</div>
                                 <div className="">{item.Name}</div>
                                 <div className="">Barrier Free Access: {item.Bfa}</div>
+                                <Button label="Get Location" onClick={() => {
+                                    handler(item)
+                                }}/>
                             </div>
                         </Popup>
                     </Marker>
