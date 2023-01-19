@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/project-ReactJS/static/css/main.37a74bd3.css",
+    "main.js": "/project-ReactJS/static/js/main.4bb834c0.js",
+    "static/media/TaxiAvailableIcon.svg": "/project-ReactJS/static/media/TaxiAvailableIcon.dbde86edab45cfef4d46cf881a9d3b5c.svg",
+    "static/media/TaxiStandIcon.svg": "/project-ReactJS/static/media/TaxiStandIcon.d41d05e8f0d89823f5b275947d6fce8e.svg",
+    "index.html": "/project-ReactJS/index.html",
+    "main.37a74bd3.css.map": "/project-ReactJS/static/css/main.37a74bd3.css.map",
+    "main.4bb834c0.js.map": "/project-ReactJS/static/js/main.4bb834c0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.37a74bd3.css",
+    "static/js/main.4bb834c0.js"
+  ]
+}
