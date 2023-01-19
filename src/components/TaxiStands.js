@@ -1,12 +1,11 @@
-import "./TaxiStands.css"; 
+import style from "./TaxiStands.module.css"; 
 
 import { useState } from "react"; 
 import { Marker, Popup, useMapEvents } from "react-leaflet"; 
 import { Icon } from "leaflet"; 
 
 import TaxiStandsJSON from "./TaxiStands.json"; 
-import TaxiStandIcon from "../images/TaxiStandIcon.svg";
-import Button from "./Button"; 
+import TaxiStandIcon from "../images/TaxiStandIcon.svg"; 
 
 function TaxiStands({ initialZoom, handler }) {
 
@@ -28,7 +27,7 @@ function TaxiStands({ initialZoom, handler }) {
                     <Marker
                         key={item.id}
                         position={[item.Latitude, item.Longitude]}
-                        icon={ new Icon({iconSize: [20, 20], iconUrl: TaxiStandIcon}) }
+                        icon={new Icon({ iconSize: [20, 20], iconUrl: TaxiStandIcon })}
                         onClick={() => {
                             setActivePopup(item.id); 
                             console.log(ActivePopup)
@@ -40,14 +39,15 @@ function TaxiStands({ initialZoom, handler }) {
                                 setActivePopup(null); 
                             }}
                         >
-                            <div className="popup-TaxiStand">
-                                <div className="popup-TaxiStand-header">Taxi {item.Type}</div>
-                                <div className="popup-TaxiStand-code">{item.TaxiCode}</div>
-                                <div className="">{item.Name}</div>
-                                <div className="">Barrier Free Access: {item.Bfa}</div>
-                                <Button label="Get Location" onClick={() => {
-                                    handler(item)
-                                }}/>
+                            <div className={style.popupTaxiStand}>
+                                <div className={style.popupTaxiStandHeader}>Taxi {item.Type}</div>
+                                <div className={style.popupTaxiStandCode}>{item.TaxiCode}</div>
+                                <div>{item.Name}</div>
+                                <div>Barrier Free Access: {item.Bfa}</div>
+                                {/* <Button label="Get Location" onClick={() => {handler(item)}}/> */}
+                                <button className={style.popupButton} onClick={() => {handler(item)}}>
+                                    Use this location
+                                </button>
                             </div>
                         </Popup>
                     </Marker>
