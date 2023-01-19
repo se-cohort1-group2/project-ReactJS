@@ -4,7 +4,7 @@ import styles from "./Table.module.css";
 import { React, useState, useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { TbRoute } from "react-icons/tb";
-import { BiCurrentLocation } from "react-icons/bi"
+import { BiCurrentLocation } from "react-icons/bi";
 
 // components
 import LeafletMap from "./LeafletMap";
@@ -75,7 +75,6 @@ function Main() {
     const flyToZoom = 15;
 
     const handlerSearch = () => {
-        
         console.log(typeof userLocInput)
         if (typeof userLocInput === "string") {
             setSearchResults([]);
@@ -120,12 +119,12 @@ function Main() {
 
     const handlerGetDetectedLoc = ([lat, long]) => {
         console.log([lat, long]);
-        funcGetLocDetails([lat, long], handlerAddLoc)
+        funcGetLocDetails([lat, long], handlerAddLoc);
     }
 
     const handlerGetClickedDest = (value) => {
         console.log(value);
-        funcGetLocDetails([value.Latitude, value.Longitude], handlerAddLoc)
+        funcGetLocDetails([value.Latitude, value.Longitude], handlerAddLoc);
     }
 
     const handlerConfirmDest = () => {
@@ -144,7 +143,7 @@ function Main() {
 
     const handlerPolyline = (value) => {
         let polyline = require("@mapbox/polyline");
-        let newPolyLatLong = [...polyline.decode(value, 5)]
+        let newPolyLatLong = [...polyline.decode(value, 5)];
         setPolyLatLong(newPolyLatLong);
         setShowPolyLine(true);
     }
@@ -159,12 +158,10 @@ function Main() {
             // eslint-disable-next-line
             initialRender = false;
         }
-
         const interval = setInterval(() => {
             funcGetTaxiAvailability(setTaxiAvailabilityList); //get taxi availability from LTA
         }, 600000);
         return () => clearInterval(interval);
-
     }, [])
 
     const handlerSelectArea = (id) => {
@@ -181,8 +178,7 @@ function Main() {
         })
         setPolygon(swapCoord);
         setCenter(swapCoord[0][0][0][0][0]);
-        setZoom(flyToZoom);
-
+        setZoom(13);
     }
 
    const locSearchBar =
@@ -208,9 +204,9 @@ function Main() {
     }
 
     let locSearchResultsTable;
-    if(Object.keys(searchResults).length > 0) { locSearchResultsTable = 
-            <TableSearchResults list={searchResults} handlerAdd={handlerAddLoc} />
-        } 
+    if (Object.keys(searchResults).length > 0) { locSearchResultsTable = 
+        <TableSearchResults list={searchResults} handlerAdd={handlerAddLoc} />
+    }
     
 
     let routing;
@@ -233,31 +229,32 @@ function Main() {
                 <div className="sideBar">
                     <h1 className="title">Taxi Availability App</h1>
                     <table className={styles.table} style={{ margin: "0 0 0 0" }}>
-                            <thead><tr>
-                                <th>{<BiCurrentLocation size={20}/>}</th>
-                                <th style={{ padding: "10px 10px 10px 0px" }}>Find Locations</th>
-                            </tr></thead>
+                        <thead><tr>
+                            <th>{<BiCurrentLocation size={20}/>}</th>
+                            <th style={{ padding: "10px 10px 10px 0px" }}>Find Locations</th>
+                        </tr></thead>
                     </table>
-                    <div className="select-detect-container">
-                        <div className="search-container"><select
-                            value={SelectedOption}
-                            onChange={(e) => {
-                                handlerSelectArea(e.target.value)
-                            }}
-                        >
-                            <option value="" selected disabled>-- View Region --</option>
-                            {AreaPolygonList.map(o => (
-                                <option key={o.pln_area_n} value={o.pln_area_n}>{o.pln_area_n}</option>
-                            ))}
-                        </select>
-                        <DetectLocationButton
-                            setLocationDetected={setLocationDetected}
-                            handlerGetDetectedLoc={handlerGetDetectedLoc}
-                            setCenter={setCenter}
-                            setZoom={setZoom}
-                            setUserLatLong={setUserLatLong}
-                            flyToZoom={flyToZoom}
-                        />
+                    <div className="find-locations-container">
+                        <div className="select-detect-container">
+                            <select
+                                value={SelectedOption}
+                                onChange={(e) => {
+                                    handlerSelectArea(e.target.value)
+                                }}
+                            >
+                                <option value="" selected disabled>-- Select a region to view --</option>
+                                {AreaPolygonList.map(o => (
+                                    <option key={o.pln_area_n} value={o.pln_area_n}>{o.pln_area_n}</option>
+                                ))}
+                            </select>
+                            <DetectLocationButton
+                                setLocationDetected={setLocationDetected}
+                                handlerGetDetectedLoc={handlerGetDetectedLoc}
+                                setCenter={setCenter}
+                                setZoom={setZoom}
+                                setUserLatLong={setUserLatLong}
+                                flyToZoom={flyToZoom}
+                            />
                         </div>
                         {locSearchBar}
                     </div>
@@ -271,8 +268,17 @@ function Main() {
                         <TableSelectedLoc name={startHeader} item={userSelectedLocDetail} handler={handlerEdit} editStatus={editLocStatus}/>
                         <TableSelectedLoc name={endHeader} item={userSelectedDestDetail} handler={handlerEdit} editStatus={editDestStatus}/>
                         {routing}
-                        
                         {locSelectedTable}
+                    </div>
+                        {locSearchResultsTable && 
+                        <table className={styles.table} style={{ margin: "0 0 0 0" }}>
+                            <thead><tr>
+                                <th style={{ width: "32px" }}></th>
+                                <th style={{ padding: "10px 10px 10px 0px" }}>Search Results</th>
+                            </tr></thead>
+                        </table>
+                        }
+                    <div className="search-results-container">
                         {locSearchResultsTable}
                     </div>
                 </div>
