@@ -1,74 +1,76 @@
 .table {
-  border-collapse: collapse;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: 0.9em;
-  font-family: sans-serif;
-  width: 100%;
-}
-.table thead tr {
-  background-color: lightgray;
-  color: black;
-  text-align: left;
-}
-.table th,
-.table td {
-  text-align: left;
-  padding: 10px;
-}
-.table th:nth-of-type(1),
-.table td:nth-of-type(1){
-  align-items: center;
-  width: 10%;
+    border-collapse: collapse; 
+    margin-top: 10px; 
+    margin-bottom: 10px; 
+    font-size: 0.9em; 
+    font-family: sans-serif; 
+    width: 100%; 
 }
 
+.table thead tr {
+    background-color: lightgray; 
+    color: black; 
+    text-align: left; 
+}
+
+.table th, 
+.table td {
+    text-align: left; 
+    padding: 10px; 
+}
+
+.table th:nth-of-type(1), 
+.table td:nth-of-type(1) {
+    align-items: center; 
+    width: 10%; 
+}
 
 .table tbody tr {
-  border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd; 
 }
 
 /* .table tbody tr:last-of-type {
-  border-bottom: 2px solid #009879;
+    border-bottom: 2px solid #009879; 
 } */
-
+  
 .buttonplus {
-  width: 1.4rem;
-  height: 1.4rem;
-  padding: 0rem;
-  background-color: white;
-  border-radius: 0.7rem;
-  border: 0px;
-  color: lightseagreen;
-  transition-duration: 0.3s;
+    width: 1.4rem; 
+    height: 1.4rem; 
+    padding: 0rem; 
+    background-color: white; 
+    border-radius: 0.7rem; 
+    border: 0px; 
+    color: lightseagreen; 
+    transition-duration: 0.3s; 
 }
 
 .buttonminus {
-  width: 1.4rem;
-  height: 1.4rem;
-  padding: 0rem;
-  background-color: white;
-  border-radius: 0.7rem;
-  border: 0px;
-  color: lightcoral;
-  transition-duration: 0.3s;
+    width: 1.4rem; 
+    height: 1.4rem; 
+    padding: 0rem; 
+    background-color: white; 
+    border-radius: 0.7rem; 
+    border: 0px; 
+    color: lightcoral; 
+    transition-duration: 0.3s; 
 }
 
 .buttonedit {
-  width: 1.4rem;
-  height: 1.4rem;
-  padding: 0rem;
-  background-color: white;
-  border-radius: 0.7rem;
-  border: 0px;
-  color: lightcoral;
-  transition-duration: 0.3s;
+    width: 1.4rem; 
+    height: 1.4rem; 
+    padding: 0rem; 
+    background-color: white; 
+    border-radius: 0.7rem; 
+    border: 0px; 
+    color: lightcoral; 
+    transition-duration: 0.3s; 
 }
 
-.buttonplus:hover,
-.buttonminus:hover,
+.buttonplus:hover, 
+.buttonminus:hover, 
 .buttonedit:hover {
-  background-color: white;
-  color: lightslategray;
-  /* border: 2px solid lightseagreen;
-  border-width: 2px; */
+    background-color: white; 
+    color: lightslategray; 
+    /* border: 2px solid lightseagreen;  */
+    /* border-width: 2px;  */
 }
