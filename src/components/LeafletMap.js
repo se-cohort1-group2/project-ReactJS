@@ -2,6 +2,7 @@ import { MapContainer, TileLayer, Polygon, Marker, Polyline, Circle, Popup } fro
 import ResetViewControl from "@20tab/react-leaflet-resetview";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from "leaflet";
+import { useRef } from "react";
 
 import TaxiStands from "./TaxiStands";
 import TaxiAvailability from "./TaxiAvailability";
@@ -28,6 +29,13 @@ function LeafletMap({
     flyToZoom,
     taxiAvailabilityList,
 }) {
+
+    const TaxiCountMarkerRef = useRef(null); 
+    const markerRef = TaxiCountMarkerRef.current; 
+    if (markerRef) {
+        markerRef.openPopup(); 
+    }
+
     return (
         <>
             <MapContainer
@@ -53,6 +61,7 @@ function LeafletMap({
                 <DetectLocationMarker LocationDetected={LocationDetected} setLocationDetected={setLocationDetected} flyToZoom={flyToZoom} />
                 {userLatLong && <Circle pathOptions={{ color: "#d75f6a" }} center={userLatLong} radius={radius} />}
                 {userLatLong && <Marker
+                    ref={TaxiCountMarkerRef}
                     position={userLatLong}
                     icon={new Icon({ iconUrl: DefaultMarkerIconRed, iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34] })}
                 >
