@@ -259,7 +259,7 @@ function Main() {
                         {(!editLocStatus && !editDestStatus) && <TableSelectedLoc name="Selected Destination" item={userSelectedDestDetail} handler={handlerEditDest} />}
                         {routing}
                         {locSearchBar}
-                        {/* {geoLocEnabler} */}
+                        {geoLocEnabler}
                         {destSearchBar}
                         {locSelectedTable}
                         {locSearchResultsTable}
