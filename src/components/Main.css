@@ -5,8 +5,8 @@ h1.title {
 .main-container {
     overflow: hidden; 
     width: 95%; 
-    height: 85vh; 
-    margin: 0vh auto 0vh auto; 
+    height: 90vh; 
+    margin: 5vh auto 5vh auto; 
     display: flex; 
     flex-direction: row; 
 }
@@ -23,12 +23,12 @@ h1.title {
     margin: 0 0 10px 0; 
     padding: 5px 0 0 10px; 
     display: flex; 
-    flex-direction: row; 
+    flex-direction: column; 
     flex-wrap: wrap; 
     column-gap: 10px; 
     row-gap: 5px; 
     justify-content: left; 
-    align-items: center; 
+    align-items: flex-start; 
 }
 
 .routing-container {

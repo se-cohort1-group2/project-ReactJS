@@ -21,14 +21,8 @@ import funcGetRoute from "./funcGetRoute";
 
 function Main() {
 
-    const initialPosition = [1.343, 103.814];
-
     // Status for user to edit location
     const [editLocStatus, setEditLocStatus] = useState(true);
-
-    // Edit location - via device location - statuses
-    const [getGeoLocstatus, setGetGeoLocStatus] = useState();
-    const [selectGeoLocStatus, setSelectGeoLocStatus] = useState(false);
 
     // Edit location - via Search
     const [searchResults, setSearchResults] = useState({});
@@ -64,10 +58,14 @@ function Main() {
     // Taxi count in radius
     const [taxiCount, setTaxiCount] = useState(0);
     const radius = 500;
+    const flyToZoom = 15; 
 
     const handlerSearch = () => {
-        setSearchResults([]);
-        funcSearch(userLocInput, 1, setSearchResults);
+        console.log(typeof userLocInput)
+        if (typeof userLocInput === "string") {
+            setSearchResults([]);
+            funcSearch(userLocInput, 1, setSearchResults);
+        }
     }
 
     const handlerAddLoc = (id, item) => {
@@ -93,6 +91,16 @@ function Main() {
         setEditDestStatus(false);
         setShowPolyLine(false);
     }
+
+    const handlerGetDetectedLoc = ([lat,long]) => {
+        console.log([lat,long]);
+        funcGetLocDetails([lat, long], handlerAddLoc)
+        setEditLocStatus(true);
+    }
+
+    // const handlertest = (value) => {
+    //     console.log(value);
+    // }
 
     const handlerAddDest = (id, item) => {
         const newDestList = [item];
@@ -150,7 +158,8 @@ function Main() {
         })
         setPolygon(swapCoord);
         setCenter(swapCoord[0][0][0][0][0]);
-        setZoom(13);
+        setZoom(flyToZoom);
+
     }
 
     let locSearchBar;
@@ -170,12 +179,7 @@ function Main() {
             </div>
     }
 
-    let geoLocEnabler;
-    if (selectGeoLocStatus) {
-        geoLocEnabler = <p>{getGeoLocstatus}</p>
-    }
-
-    let locSelectedTable;
+    let locSelectedTable; 
     if (editLocStatus && Object.keys(userLocList).length > 0) {
         locSelectedTable =
             <div>
@@ -235,11 +239,10 @@ function Main() {
 
     return (
         <>
-            <h1 className="title">Taxi Availability App</h1>
-
             <div className="main-container">
 
                 <div className="sideBar">
+                    <h1 className="title">Taxi Availability App</h1>
                     <div className="select-detect-container">
                         <select
                             value={SelectedOption}
@@ -247,12 +250,19 @@ function Main() {
                                 handlerSelectArea(e.target.value)
                             }}
                         >
-                            <option value="" selected disabled>-- Select Area --</option>
+                            <option value="" selected disabled>-- View Region --</option>
                             {AreaPolygonList.map(o => (
                                 <option key={o.pln_area_n} value={o.pln_area_n}>{o.pln_area_n}</option>
                             ))}
                         </select>
-                        <DetectLocationButton setLocationDetected={setLocationDetected} setUserLatLong={setUserLatLong} />
+                        <DetectLocationButton
+                            setLocationDetected={setLocationDetected}
+                            handlerGetDetectedLoc={handlerGetDetectedLoc}
+                            setCenter={setCenter}
+                            setZoom={setZoom}
+                            setUserLatLong={setUserLatLong}
+                            flyToZoom={flyToZoom}
+                        />
                     </div>
                     <div className="routing-container">
                         {!editLocStatus && <TableSelectedLoc name="Selected Starting Location" item={userSelectedLocDetail} handler={handlerEditLoc} />}
@@ -280,6 +290,7 @@ function Main() {
                         taxiCount={taxiCount}
                         setTaxiCount={setTaxiCount}
                         radius={radius}
+                        flyToZoom={flyToZoom}
                     />
                 </div>
 
