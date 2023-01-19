@@ -58,7 +58,7 @@ function Main() {
     // Taxi count in radius
     const [taxiCount, setTaxiCount] = useState(0);
     const radius = 500;
-    const flyToZoom = 15; 
+    const flyToZoom = 15;
 
     const handlerSearch = () => {
         console.log(typeof userLocInput)
@@ -83,6 +83,9 @@ function Main() {
             setUserLatLong([value.LATITUDE, value.LONGITUDE]);
             setEditLocStatus(false);
             setEditDestStatus(true);
+            //zoom in on confirm
+            setCenter([value.LATITUDE, value.LONGITUDE]);
+            setZoom(flyToZoom);
         })
     }
 
@@ -92,8 +95,8 @@ function Main() {
         setShowPolyLine(false);
     }
 
-    const handlerGetDetectedLoc = ([lat,long]) => {
-        console.log([lat,long]);
+    const handlerGetDetectedLoc = ([lat, long]) => {
+        console.log([lat, long]);
         funcGetLocDetails([lat, long], handlerAddLoc)
         setEditLocStatus(true);
     }
@@ -179,7 +182,7 @@ function Main() {
             </div>
     }
 
-    let locSelectedTable; 
+    let locSelectedTable;
     if (editLocStatus && Object.keys(userLocList).length > 0) {
         locSelectedTable =
             <div>
@@ -269,7 +272,7 @@ function Main() {
                         {(!editLocStatus && !editDestStatus) && <TableSelectedLoc name="Selected Destination" item={userSelectedDestDetail} handler={handlerEditDest} />}
                         {routing}
                         {locSearchBar}
-                        {geoLocEnabler}
+                        {/* {geoLocEnabler} */}
                         {destSearchBar}
                         {locSelectedTable}
                         {locSearchResultsTable}
