@@ -157,9 +157,9 @@ function Main() {
             return [swapCoordSet1];
         })
         setPolygon(swapCoord);
-        setUserLatLong(swapCoord[0][0][0][0][0]);
         setCenter(swapCoord[0][0][0][0][0]);
         setZoom(flyToZoom);
+
     }
 
     let locSearchBar;
@@ -269,7 +269,7 @@ function Main() {
                         {(!editLocStatus && !editDestStatus) && <TableSelectedLoc name="Selected Destination" item={userSelectedDestDetail} handler={handlerEditDest} />}
                         {routing}
                         {locSearchBar}
-                        {/* {geoLocEnabler} */}
+                        {geoLocEnabler}
                         {destSearchBar}
                         {locSelectedTable}
                         {locSearchResultsTable}
