@@ -1,4 +1,4 @@
-import Button from "./Button"; 
+import Button from "./Button";
 
 function DetectLocationButton({ setLocationDetected, handlerGetDetectedLoc, setCenter, setZoom, setUserLatLong, flyToZoom }) {
 
@@ -10,12 +10,13 @@ function DetectLocationButton({ setLocationDetected, handlerGetDetectedLoc, setC
             setUserLatLong([p.coords.latitude,p.coords.longitude]); 
             setCenter([p.coords.latitude,p.coords.longitude]); 
             setZoom(flyToZoom); 
+
         })
     }
 
     return (
         <>
-            <Button label="Detect Location" onClick={handleClick}/>
+            <Button label="Detect Location" onClick={handleClick} />
         </>
     )
 }

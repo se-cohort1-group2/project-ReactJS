@@ -12,12 +12,15 @@ import TableSearchResults from "./TableSearchResults";
 import TableUserLoc from "./TableUserLoc";
 import TableSelectedLoc from "./TableSelectedLoc";
 import DetectLocationButton from "./DetectLocationButton";
+import TaxiAvailabilityJSON from "./TaxiAvailability2.json";
 
 // functions
 import funcGetPlanningArea from "./funcGetPlanningArea";
 import funcSearch from "./funcSearch";
 import funcGetLocDetails from "./funcGetLocDetails";
 import funcGetRoute from "./funcGetRoute";
+import funcGetPlanningAreaStatic from "./funcGetPlanningAreaStatic";
+import funcGetTaxiAvailability from "./funcGetTaxiAvailability";
 
 function Main() {
 
@@ -51,6 +54,9 @@ function Main() {
     const [center, setCenter] = useState([1.343, 103.814]);
     const [zoom, setZoom] = useState(12);
 
+    // Taxi Availability
+    const [taxiAvailabilityList, setTaxiAvailabilityList] = useState(TaxiAvailabilityJSON.value);
+
     // eslint-disable-next-line
     const [SelectedOption, setSelectedOption] = useState();
     const [LocationDetected, setLocationDetected] = useState(false);
@@ -58,7 +64,7 @@ function Main() {
     // Taxi count in radius
     const [taxiCount, setTaxiCount] = useState(0);
     const radius = 500;
-    const flyToZoom = 15; 
+    const flyToZoom = 15;
 
     const handlerSearch = () => {
         console.log(typeof userLocInput)
@@ -83,6 +89,9 @@ function Main() {
             setUserLatLong([value.LATITUDE, value.LONGITUDE]);
             setEditLocStatus(false);
             setEditDestStatus(true);
+            //zoom in on confirm
+            setCenter([value.LATITUDE, value.LONGITUDE]);
+            setZoom(flyToZoom);
         })
     }
 
@@ -92,8 +101,8 @@ function Main() {
         setShowPolyLine(false);
     }
 
-    const handlerGetDetectedLoc = ([lat,long]) => {
-        console.log([lat,long]);
+    const handlerGetDetectedLoc = ([lat, long]) => {
+        console.log([lat, long]);
         funcGetLocDetails([lat, long], handlerAddLoc)
         setEditLocStatus(true);
     }
@@ -138,10 +147,19 @@ function Main() {
     let initialRender = true;
     useEffect(() => {
         if (initialRender) {
-            funcGetPlanningArea(setAreaPolygonList);
+            // funcGetPlanningArea(setAreaPolygonList); //get area update from OneMap
+            funcGetPlanningAreaStatic(setAreaPolygonList); //get area from static json
+            funcGetTaxiAvailability(setTaxiAvailabilityList); //get taxi availability from LTA
+            console.log(taxiAvailabilityList);
             // eslint-disable-next-line
             initialRender = false;
         }
+
+        const interval = setInterval(() => {
+            funcGetTaxiAvailability(setTaxiAvailabilityList); //get taxi availability from LTA
+        }, 600000);
+        return () => clearInterval(interval);
+
     }, [])
 
     const handlerSelectArea = (id) => {
@@ -157,9 +175,9 @@ function Main() {
             return [swapCoordSet1];
         })
         setPolygon(swapCoord);
-        setUserLatLong(swapCoord[0][0][0][0][0]);
         setCenter(swapCoord[0][0][0][0][0]);
         setZoom(flyToZoom);
+
     }
 
     let locSearchBar;
@@ -179,7 +197,7 @@ function Main() {
             </div>
     }
 
-    let locSelectedTable; 
+    let locSelectedTable;
     if (editLocStatus && Object.keys(userLocList).length > 0) {
         locSelectedTable =
             <div>
@@ -291,6 +309,7 @@ function Main() {
                         setTaxiCount={setTaxiCount}
                         radius={radius}
                         flyToZoom={flyToZoom}
+                        taxiAvailabilityList={taxiAvailabilityList}
                     />
                 </div>
 
