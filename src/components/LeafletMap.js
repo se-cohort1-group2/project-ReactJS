@@ -10,7 +10,7 @@ import SetView from "./SetView";
 import DetectLocationMarker from "./DetectLocationMarker";
 import CountTaxis from "./CountTaxis";
 
-import DefaultMarkerIconRed from "../images/DefaultMarkerIconRed.png"; 
+import DefaultMarkerIconRed from "../images/DefaultMarkerIconRed.png";
 
 function LeafletMap({
     polygon,
@@ -26,6 +26,7 @@ function LeafletMap({
     setTaxiCount,
     radius,
     flyToZoom,
+    taxiAvailabilityList,
 }) {
     return (
         <>
@@ -46,7 +47,7 @@ function LeafletMap({
                     icon="url(https://raw.githubusercontent.com/se-cohort1-group2/project-ReactJS/71a66e2ba063dc9ae3a652cac95531e249ea5b71/assets/ResetMapView.svg)"
                 />
                 <TaxiStands initialZoom={12} />
-                <TaxiAvailability initialZoom={12} />
+                <TaxiAvailability initialZoom={12} taxiAvailabilityList={taxiAvailabilityList} />
                 <Polygon pathOptions={{ color: "green" }} positions={polygon} />
                 <SetView center={center} zoom={zoom} />
                 <DetectLocationMarker LocationDetected={LocationDetected} setLocationDetected={setLocationDetected} flyToZoom={flyToZoom} />
@@ -56,10 +57,10 @@ function LeafletMap({
                     icon={new Icon({ iconUrl: DefaultMarkerIconRed, iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34] })}
                 >
                     <Popup>
-                        No. of taxis available within {radius} metres: {taxiCount}
+                        Taxis within {radius} metres: {taxiCount}
                     </Popup>
                 </Marker>}
-                {userLatLong && <CountTaxis marker={userLatLong} radius={radius} setTaxiCount={setTaxiCount} />}
+                {userLatLong && <CountTaxis marker={userLatLong} radius={radius} setTaxiCount={setTaxiCount} taxiAvailabilityList={taxiAvailabilityList} />}
                 {destLatLong && <Marker position={destLatLong} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })} />}
                 {showPolyLine && <Polyline pathOptions={{ color: "blue" }} positions={polyLatLong} />}
             </MapContainer>

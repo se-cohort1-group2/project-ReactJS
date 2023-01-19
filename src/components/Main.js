@@ -12,12 +12,15 @@ import TableSearchResults from "./TableSearchResults";
 import TableUserLoc from "./TableUserLoc";
 import TableSelectedLoc from "./TableSelectedLoc";
 import DetectLocationButton from "./DetectLocationButton";
+import TaxiAvailabilityJSON from "./TaxiAvailability2.json";
 
 // functions
 import funcGetPlanningArea from "./funcGetPlanningArea";
 import funcSearch from "./funcSearch";
 import funcGetLocDetails from "./funcGetLocDetails";
 import funcGetRoute from "./funcGetRoute";
+import funcGetPlanningAreaStatic from "./funcGetPlanningAreaStatic";
+import funcGetTaxiAvailability from "./funcGetTaxiAvailability";
 
 function Main() {
 
@@ -50,6 +53,9 @@ function Main() {
     const [polygon, setPolygon] = useState([]);
     const [center, setCenter] = useState([1.343, 103.814]);
     const [zoom, setZoom] = useState(12);
+
+    // Taxi Availability
+    const [taxiAvailabilityList, setTaxiAvailabilityList] = useState(TaxiAvailabilityJSON.value);
 
     // eslint-disable-next-line
     const [SelectedOption, setSelectedOption] = useState();
@@ -141,10 +147,19 @@ function Main() {
     let initialRender = true;
     useEffect(() => {
         if (initialRender) {
-            funcGetPlanningArea(setAreaPolygonList);
+            // funcGetPlanningArea(setAreaPolygonList); //get area update from OneMap
+            funcGetPlanningAreaStatic(setAreaPolygonList); //get area from static json
+            funcGetTaxiAvailability(setTaxiAvailabilityList); //get taxi availability from LTA
+            console.log(taxiAvailabilityList);
             // eslint-disable-next-line
             initialRender = false;
         }
+
+        const interval = setInterval(() => {
+            funcGetTaxiAvailability(setTaxiAvailabilityList); //get taxi availability from LTA
+        }, 600000);
+        return () => clearInterval(interval);
+
     }, [])
 
     const handlerSelectArea = (id) => {
@@ -294,6 +309,7 @@ function Main() {
                         setTaxiCount={setTaxiCount}
                         radius={radius}
                         flyToZoom={flyToZoom}
+                        taxiAvailabilityList={taxiAvailabilityList}
                     />
                 </div>
 
