@@ -58,10 +58,14 @@ function Main() {
     // Taxi count in radius
     const [taxiCount, setTaxiCount] = useState(0);
     const radius = 500;
+    const flyToZoom = 15; 
 
     const handlerSearch = () => {
-        setSearchResults([]);
-        funcSearch(userLocInput, 1, setSearchResults);
+        console.log(typeof userLocInput)
+        if (typeof userLocInput === "string") {
+            setSearchResults([]);
+            funcSearch(userLocInput, 1, setSearchResults);
+        }
     }
 
     const handlerAddLoc = (id, item) => {
@@ -153,9 +157,9 @@ function Main() {
             return [swapCoordSet1];
         })
         setPolygon(swapCoord);
-        setCenter(swapCoord[0][0][0][0][0]);
         setUserLatLong(swapCoord[0][0][0][0][0]);
-        setZoom(17);
+        setCenter(swapCoord[0][0][0][0][0]);
+        setZoom(flyToZoom);
     }
 
     let locSearchBar;
@@ -235,11 +239,10 @@ function Main() {
 
     return (
         <>
-            <h1 className="title">Taxi Availability App</h1>
-
             <div className="main-container">
 
                 <div className="sideBar">
+                    <h1 className="title">Taxi Availability App</h1>
                     <div className="select-detect-container">
                         <select
                             value={SelectedOption}
@@ -247,13 +250,19 @@ function Main() {
                                 handlerSelectArea(e.target.value)
                             }}
                         >
-                            <option value="" selected disabled>-- Select Area --</option>
+                            <option value="" selected disabled>-- View Region --</option>
                             {AreaPolygonList.map(o => (
                                 <option key={o.pln_area_n} value={o.pln_area_n}>{o.pln_area_n}</option>
                             ))}
                         </select>
-
-                        <DetectLocationButton setLocationDetected={setLocationDetected} handlerGetDetectedLoc={handlerGetDetectedLoc}/>
+                        <DetectLocationButton
+                            setLocationDetected={setLocationDetected}
+                            handlerGetDetectedLoc={handlerGetDetectedLoc}
+                            setCenter={setCenter}
+                            setZoom={setZoom}
+                            setUserLatLong={setUserLatLong}
+                            flyToZoom={flyToZoom}
+                        />
                     </div>
                     <div className="routing-container">
                         {!editLocStatus && <TableSelectedLoc name="Selected Starting Location" item={userSelectedLocDetail} handler={handlerEditLoc} />}
@@ -281,6 +290,7 @@ function Main() {
                         taxiCount={taxiCount}
                         setTaxiCount={setTaxiCount}
                         radius={radius}
+                        flyToZoom={flyToZoom}
                     />
                 </div>
 
