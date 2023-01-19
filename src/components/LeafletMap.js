@@ -10,6 +10,8 @@ import SetView from "./SetView";
 import DetectLocationMarker from "./DetectLocationMarker";
 import CountTaxis from "./CountTaxis";
 
+import DefaultMarkerIconRed from "../images/DefaultMarkerIconRed.png"; 
+
 function LeafletMap({
     polygon,
     LocationDetected,
@@ -23,6 +25,7 @@ function LeafletMap({
     taxiCount,
     setTaxiCount,
     radius,
+    flyToZoom,
 }) {
     return (
         <>
@@ -46,18 +49,19 @@ function LeafletMap({
                 <TaxiAvailability initialZoom={12} />
                 <Polygon pathOptions={{ color: "green" }} positions={polygon} />
                 <SetView center={center} zoom={zoom} />
-                <DetectLocationMarker LocationDetected={LocationDetected} setLocationDetected={setLocationDetected} />
-                {userLatLong && <Marker position={userLatLong}
-                // icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}
+                <DetectLocationMarker LocationDetected={LocationDetected} setLocationDetected={setLocationDetected} flyToZoom={flyToZoom} />
+                {userLatLong && <Circle pathOptions={{ color: "#d75f6a" }} center={userLatLong} radius={radius} />}
+                {userLatLong && <Marker
+                    position={userLatLong}
+                    icon={new Icon({ iconUrl: DefaultMarkerIconRed, iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34] })}
                 >
                     <Popup>
-                        Taxis available within {radius}m: {taxiCount}
+                        No. of taxis available within {radius} metres: {taxiCount}
                     </Popup>
                 </Marker>}
+                {userLatLong && <CountTaxis marker={userLatLong} radius={radius} setTaxiCount={setTaxiCount} />}
                 {destLatLong && <Marker position={destLatLong} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })} />}
                 {showPolyLine && <Polyline pathOptions={{ color: "blue" }} positions={polyLatLong} />}
-                {userLatLong && <CountTaxis marker={userLatLong} radius={radius} setTaxiCount={setTaxiCount} />}
-                {userLatLong && <Circle pathOptions={{ color: '#e99494' }} center={userLatLong} radius={radius} />}
             </MapContainer>
         </>
     )
