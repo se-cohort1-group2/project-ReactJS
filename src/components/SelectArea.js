@@ -16,8 +16,8 @@ function SelectArea() {
         }
     }, [])
 
-    const OneMapToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjk2NTYsInVzZXJfaWQiOjk2NTYsImVtYWlsIjoicGhvZWJleWtxQGdtYWlsLmNvbSIsImZvcmV2ZXIiOmZhbHNlLCJpc3MiOiJodHRwOlwvXC9vbTIuZGZlLm9uZW1hcC5zZ1wvYXBpXC92MlwvdXNlclwvc2Vzc2lvbiIsImlhdCI6MTY3Mzg2Mjg2NSwiZXhwIjoxNjc0Mjk0ODY1LCJuYmYiOjE2NzM4NjI4NjUsImp0aSI6ImIyMTc1YmJjZTE0N2FiMmZjOTJkZmEyZGNiZjczMzBmIn0.F5hSL5YmIbkY2isTnyaSOPZHRKPjeR7vjnwPwyWWbfM"
-    // token expires Thursday 19th Jan 2023
+    const OneMapToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjk2NTYsInVzZXJfaWQiOjk2NTYsImVtYWlsIjoicGhvZWJleWtxQGdtYWlsLmNvbSIsImZvcmV2ZXIiOmZhbHNlLCJpc3MiOiJodHRwOlwvXC9vbTIuZGZlLm9uZW1hcC5zZ1wvYXBpXC92MlwvdXNlclwvc2Vzc2lvbiIsImlhdCI6MTY3NDE2NDU4MSwiZXhwIjoxNjc0NTk2NTgxLCJuYmYiOjE2NzQxNjQ1ODEsImp0aSI6IjEwM2VlYzUzNTQ3NTgwNmQ1MGI5OWQzNWY3ZTg0NmQzIn0.wy7To0TUxuy5biHrcwf2pdu9DDRLX85kKU3QxJL7-H8"
+    // token expires Monday 23rd Jan 2023
 
     const [AreaPolygonList, setAreaPolygonList] = useState([]); 
 

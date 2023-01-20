@@ -1,0 +1,32 @@
+.popupTaxiAvailable {
+    font-size: 14px; 
+    min-width: 150px; 
+    min-height: 50px; 
+}
+
+.popupTaxiAvailableHeader {
+    background-color: #5588ee; 
+    color: white; 
+    letter-spacing: 0.5px; 
+    font-size: 18px; 
+    font-weight: bold; 
+    margin: -14px -20px 10px -20px; 
+    padding: 10px 0 5px 20px; 
+    border-radius: 10px 10px 0 0; 
+}
+
+.popupButton {
+    margin: 10px 0 0 0; 
+    padding: 6px 10px 4px 10px; 
+    color: white; 
+    background-color: #5588ee; 
+    border: 1px solid #5588ee; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    transition-duration: 0.1s; 
+}
+
+.popupButton:hover {
+    background-color: lightslategray; 
+    border: 1px solid lightslategray; 
+}

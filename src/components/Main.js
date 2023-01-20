@@ -3,6 +3,8 @@ import styles from "./Table.module.css";
 
 import { React, useState, useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
+import { TbRoute } from "react-icons/tb";
+import { BiCurrentLocation } from "react-icons/bi";
 
 // components
 import LeafletMap from "./LeafletMap";
@@ -12,7 +14,7 @@ import TableSearchResults from "./TableSearchResults";
 import TableUserLoc from "./TableUserLoc";
 import TableSelectedLoc from "./TableSelectedLoc";
 import DetectLocationButton from "./DetectLocationButton";
-import TaxiAvailabilityJSON from "./TaxiAvailability2.json";
+import TaxiAvailabilityJSON from "./TaxiAvailability.json";
 
 // functions
 import funcGetPlanningArea from "./funcGetPlanningArea";
@@ -21,6 +23,13 @@ import funcGetLocDetails from "./funcGetLocDetails";
 import funcGetRoute from "./funcGetRoute";
 import funcGetPlanningAreaStatic from "./funcGetPlanningAreaStatic";
 import funcGetTaxiAvailability from "./funcGetTaxiAvailability";
+
+const initialLoc = {
+    ADDRESS: "Please find and set a location"
+}
+
+const startHeader = "Starting Location";
+const endHeader = "Ending Location";
 
 function Main() {
 
@@ -33,15 +42,14 @@ function Main() {
     // Edit location - location inputs/outputs
     const [userLocInput, setUserLocInput] = useState();
     const [userLocList, setUserLocList] = useState({});
-    const [userSelectedLocDetail, setUserSelectedLocDetail] = useState();
+    const [userSelectedLocDetail, setUserSelectedLocDetail] = useState(initialLoc);
     const [userLatLong, setUserLatLong] = useState();
 
     // Status for user to edit destination
-    const [editDestStatus, setEditDestStatus] = useState(false);
+    const [editDestStatus, setEditDestStatus] = useState(true);
 
     // Edit destination - destination inputs/outputs
-    const [userDestList, setUserDestList] = useState([]);
-    const [userSelectedDestDetail, setUserSelectedDestDetail] = useState();
+    const [userSelectedDestDetail, setUserSelectedDestDetail] = useState(initialLoc);
     const [destLatLong, setDestLatLong] = useState();
 
     // Routing
@@ -84,53 +92,49 @@ function Main() {
     }
 
     const handlerConfirmLoc = () => {
+        setShowPolyLine(false);
         Object.entries(userLocList).map(([key, value]) => {
             setUserSelectedLocDetail(value);
             setUserLatLong([value.LATITUDE, value.LONGITUDE]);
-            setEditLocStatus(false);
-            setEditDestStatus(true);
-            //zoom in on confirm
             setCenter([value.LATITUDE, value.LONGITUDE]);
             setZoom(flyToZoom);
         })
+        setEditLocStatus(false);
+        setUserLocList([]);
     }
 
-    const handlerEditLoc = () => {
-        setEditLocStatus(true);
-        setEditDestStatus(false);
+    const handlerEdit = (value) => {
+        if (value === startHeader) {
+            setUserSelectedLocDetail(initialLoc);
+            setUserLatLong();
+            setEditLocStatus(true);
+        }
+        if (value === endHeader) {
+            setUserSelectedDestDetail(initialLoc);
+            setDestLatLong();
+            setEditDestStatus(true);
+        }
         setShowPolyLine(false);
     }
 
     const handlerGetDetectedLoc = ([lat, long]) => {
         console.log([lat, long]);
-        funcGetLocDetails([lat, long], handlerAddLoc)
-        setEditLocStatus(true);
+        funcGetLocDetails([lat, long], handlerAddLoc);
     }
 
-    // const handlertest = (value) => {
-    //     console.log(value);
-    // }
-
-    const handlerAddDest = (id, item) => {
-        const newDestList = [item];
-        setUserDestList(newDestList);
-    }
-
-    const handlerDeleteDest = () => {
-        setUserDestList([]);
+    const handlerGetClickedDest = (value) => {
+        console.log(value);
+        funcGetLocDetails([value.Latitude, value.Longitude], handlerAddLoc);
     }
 
     const handlerConfirmDest = () => {
-        Object.entries(userDestList).map(([key, value]) => {
+        setShowPolyLine(false);
+        Object.entries(userLocList).map(([key, value]) => {
             setUserSelectedDestDetail(value);
             setDestLatLong([value.LATITUDE, value.LONGITUDE]);
-            setEditDestStatus(false);
         })
-    }
-
-    const handlerEditDest = () => {
-        setEditDestStatus(true);
-        setShowPolyLine(false);
+        setUserLocList([]);
+        setEditDestStatus(false);
     }
 
     const handlerRoute = (type) => {
@@ -139,7 +143,7 @@ function Main() {
 
     const handlerPolyline = (value) => {
         let polyline = require("@mapbox/polyline");
-        let newPolyLatLong = [...polyline.decode(value, 5)]
+        let newPolyLatLong = [...polyline.decode(value, 5)];
         setPolyLatLong(newPolyLatLong);
         setShowPolyLine(true);
     }
@@ -154,12 +158,10 @@ function Main() {
             // eslint-disable-next-line
             initialRender = false;
         }
-
         const interval = setInterval(() => {
             funcGetTaxiAvailability(setTaxiAvailabilityList); //get taxi availability from LTA
         }, 600000);
         return () => clearInterval(interval);
-
     }, [])
 
     const handlerSelectArea = (id) => {
@@ -176,71 +178,36 @@ function Main() {
         })
         setPolygon(swapCoord);
         setCenter(swapCoord[0][0][0][0][0]);
-        setZoom(flyToZoom);
-
+        setZoom(13);
     }
 
-    let locSearchBar;
-    if (editLocStatus) {
-        locSearchBar =
-            <div>
-                <table className={styles.table} style={{ margin: "-5px 0 0 0" }}>
-                    <thead><tr>
-                        <th></th>
-                        <th style={{ padding: "15px 10px 10px 15px" }}>Enter Starting Location</th>
-                    </tr></thead>
-                </table>
-                <div className="search-container">
-                    <Input value={userLocInput} label="FROM" onChange={setUserLocInput} />
-                    <Button label={<AiOutlineSearch size={20} />} onClick={handlerSearch} />
-                </div>
+   const locSearchBar =
+        <div>
+            <div className="search-container">
+                <Input value={userLocInput} label="Search" onChange={setUserLocInput} />
+                <Button label={<AiOutlineSearch size={20} />} onClick={handlerSearch} />
             </div>
-    }
+        </div>
+
+
 
     let locSelectedTable;
-    if (editLocStatus && Object.keys(userLocList).length > 0) {
+    if (Object.keys(userLocList).length > 0) {
         locSelectedTable =
             <div>
-                <TableUserLoc name="Starting Location" list={userLocList} handler={handlerDeleteLoc} />
+                <TableUserLoc name="Location" list={userLocList} handler={handlerDeleteLoc} />
                 <div className="search-container">
-                    <Button label="Confirm" onClick={handlerConfirmLoc} />
-                </div>
-            </div>
-    }
-    if (editDestStatus && Object.keys(userDestList).length > 0) {
-        locSelectedTable =
-            <div>
-                <TableUserLoc name="Destination" list={userDestList} handler={handlerDeleteDest} />
-                <div className="search-container">
-                    <Button label="Confirm" onClick={handlerConfirmDest} />
+                    <Button label="Set as Start" onClick={handlerConfirmLoc} />
+                    <Button label="Set as End" onClick={handlerConfirmDest} />
                 </div>
             </div>
     }
 
     let locSearchResultsTable;
-    if (editLocStatus && Object.keys(searchResults).length > 0) {
-        locSearchResultsTable = <TableSearchResults list={searchResults} handlerAdd={handlerAddLoc} />
+    if (Object.keys(searchResults).length > 0) { locSearchResultsTable = 
+        <TableSearchResults list={searchResults} handlerAdd={handlerAddLoc} />
     }
-    if (editDestStatus && Object.keys(searchResults).length > 0) {
-        locSearchResultsTable = <TableSearchResults list={searchResults} handlerAdd={handlerAddDest} />
-    }
-
-    let destSearchBar;
-    if (editDestStatus) {
-        destSearchBar =
-            <div>
-                <table className={styles.table}>
-                    <thead><tr>
-                        <th></th>
-                        <th>Enter Destination</th>
-                    </tr></thead>
-                </table>
-                <div className="search-container">
-                    <Input value={userLocInput} label="TO" onChange={setUserLocInput} />
-                    <Button label={<AiOutlineSearch size={20} />} onClick={handlerSearch} />
-                </div>
-            </div>
-    }
+    
 
     let routing;
     if (!editLocStatus && !editDestStatus) {
@@ -261,35 +228,57 @@ function Main() {
 
                 <div className="sideBar">
                     <h1 className="title">Taxi Availability App</h1>
-                    <div className="select-detect-container">
-                        <select
-                            value={SelectedOption}
-                            onChange={(e) => {
-                                handlerSelectArea(e.target.value)
-                            }}
-                        >
-                            <option value="" selected disabled>-- View Region --</option>
-                            {AreaPolygonList.map(o => (
-                                <option key={o.pln_area_n} value={o.pln_area_n}>{o.pln_area_n}</option>
-                            ))}
-                        </select>
-                        <DetectLocationButton
-                            setLocationDetected={setLocationDetected}
-                            handlerGetDetectedLoc={handlerGetDetectedLoc}
-                            setCenter={setCenter}
-                            setZoom={setZoom}
-                            setUserLatLong={setUserLatLong}
-                            flyToZoom={flyToZoom}
-                        />
+                    <table className={styles.table} style={{ margin: "0 0 0 0" }}>
+                        <thead><tr>
+                            <th>{<BiCurrentLocation size={20}/>}</th>
+                            <th style={{ padding: "10px 10px 10px 0px" }}>Find Locations</th>
+                        </tr></thead>
+                    </table>
+                    <div className="find-locations-container">
+                        <div className="select-detect-container">
+                            <select
+                                value={SelectedOption}
+                                onChange={(e) => {
+                                    handlerSelectArea(e.target.value)
+                                }}
+                            >
+                                <option value="" selected disabled>-- Select a region to view --</option>
+                                {AreaPolygonList.map(o => (
+                                    <option key={o.pln_area_n} value={o.pln_area_n}>{o.pln_area_n}</option>
+                                ))}
+                            </select>
+                            <DetectLocationButton
+                                setLocationDetected={setLocationDetected}
+                                handlerGetDetectedLoc={handlerGetDetectedLoc}
+                                setCenter={setCenter}
+                                setZoom={setZoom}
+                                setUserLatLong={setUserLatLong}
+                                flyToZoom={flyToZoom}
+                            />
+                        </div>
+                        {locSearchBar}
                     </div>
                     <div className="routing-container">
-                        {!editLocStatus && <TableSelectedLoc name="Selected Starting Location" item={userSelectedLocDetail} handler={handlerEditLoc} />}
-                        {(!editLocStatus && !editDestStatus) && <TableSelectedLoc name="Selected Destination" item={userSelectedDestDetail} handler={handlerEditDest} />}
+                        <table className={styles.table} style={{ margin: "0 0 0 0" }}>
+                            <thead><tr>
+                                <th>{<TbRoute size={20}/>}</th>
+                                <th style={{ padding: "10px 10px 10px 0px" }}>Routing</th>
+                            </tr></thead>
+                        </table>
+                        <TableSelectedLoc name={startHeader} item={userSelectedLocDetail} handler={handlerEdit} editStatus={editLocStatus}/>
+                        <TableSelectedLoc name={endHeader} item={userSelectedDestDetail} handler={handlerEdit} editStatus={editDestStatus}/>
                         {routing}
-                        {locSearchBar}
-                        {/* {geoLocEnabler} */}
-                        {destSearchBar}
                         {locSelectedTable}
+                    </div>
+                        {locSearchResultsTable && 
+                        <table className={styles.table} style={{ margin: "0 0 0 0" }}>
+                            <thead><tr>
+                                <th style={{ width: "32px" }}></th>
+                                <th style={{ padding: "10px 10px 10px 0px" }}>Search Results</th>
+                            </tr></thead>
+                        </table>
+                        }
+                    <div className="search-results-container">
                         {locSearchResultsTable}
                     </div>
                 </div>
@@ -310,6 +299,7 @@ function Main() {
                         radius={radius}
                         flyToZoom={flyToZoom}
                         taxiAvailabilityList={taxiAvailabilityList}
+                        handler={handlerGetClickedDest}
                     />
                 </div>
 
