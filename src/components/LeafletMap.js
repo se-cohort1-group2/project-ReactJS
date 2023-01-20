@@ -29,12 +29,14 @@ function LeafletMap({
     flyToZoom,
     taxiAvailabilityList,
     handler,
+    position,
+    setPosition,
 }) {
 
-    const TaxiCountMarkerRef = useRef(null); 
-    const markerRef = TaxiCountMarkerRef.current; 
+    const TaxiCountMarkerRef = useRef(null);
+    const markerRef = TaxiCountMarkerRef.current;
     if (markerRef) {
-        markerRef.openPopup(); 
+        markerRef.openPopup();
     }
 
     return (
@@ -59,7 +61,7 @@ function LeafletMap({
                 <TaxiAvailability initialZoom={12} taxiAvailabilityList={taxiAvailabilityList} handler={handler} />
                 <Polygon pathOptions={{ color: "green" }} positions={polygon} />
                 <SetView center={center} zoom={zoom} />
-                <DetectLocationMarker LocationDetected={LocationDetected} setLocationDetected={setLocationDetected} flyToZoom={flyToZoom} />
+                <DetectLocationMarker LocationDetected={LocationDetected} setLocationDetected={setLocationDetected} flyToZoom={flyToZoom} position={position} setPosition={setPosition} />
                 {userLatLong && <Circle pathOptions={{ color: "#d75f6a" }} center={userLatLong} radius={radius} />}
                 {userLatLong && <Marker
                     ref={TaxiCountMarkerRef}
