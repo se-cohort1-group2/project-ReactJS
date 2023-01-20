@@ -10,6 +10,7 @@
         "@testing-library/user-event": "^13.5.0",
         "axios": "^1.2.2",
         "cors": "^2.8.5",
+        "gh-pages": "^4.0.0",
         "html-react-parser": "^3.0.8",
         "joi": "^17.7.0",
         "joi-browser": "^13.4.0",

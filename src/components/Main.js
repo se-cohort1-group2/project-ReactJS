@@ -165,7 +165,7 @@ function Main() {
         if (initialRender) {
             // funcGetPlanningArea(setAreaPolygonList); //get area update from OneMap
             funcGetPlanningAreaStatic(setAreaPolygonList); //get area from static json
-            // funcGetTaxiAvailability(setTaxiAvailabilityList); //get taxi availability from LTA
+            funcGetTaxiAvailability(setTaxiAvailabilityList); //get taxi availability from LTA
             console.log(taxiAvailabilityList);
             // eslint-disable-next-line
             initialRender = false;
