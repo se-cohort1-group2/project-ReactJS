@@ -44,7 +44,7 @@ function LeafletMap({
             <MapContainer
                 center={[1.343, 103.814]}
                 zoom={12} minZoom={11} maxZoom={18}
-                maxBounds={[[1.514, 104.166], [1.114, 103.581]]}
+                /* maxBounds={[[1.514, 104.166], [1.114, 103.581]]} */
                 zoomSnap={0.5} zoomDelta={0.5}
                 scrollWheelZoom={true} wheelPxPerZoomLevel={120}
             >

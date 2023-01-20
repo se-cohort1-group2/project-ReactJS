@@ -40,7 +40,7 @@ function Main() {
     const [searchResults, setSearchResults] = useState({});
 
     // Edit location - location inputs/outputs
-    const [userLocInput, setUserLocInput] = useState();
+    const [userLocInput, setUserLocInput] = useState("");
     const [userLocList, setUserLocList] = useState({});
     const [userSelectedLocDetail, setUserSelectedLocDetail] = useState(initialLoc);
     const [userLatLong, setUserLatLong] = useState();
@@ -77,6 +77,10 @@ function Main() {
     // Position for current location
     const [position, setPosition] = useState(null);
 
+    const handlerChangeInput = (value) => {
+        setUserLocInput(value)
+    }
+
     const handlerSearch = () => {
         console.log(typeof userLocInput)
         if (typeof userLocInput === "string") {
@@ -105,6 +109,7 @@ function Main() {
         })
         setEditLocStatus(false);
         setUserLocList([]);
+        setPosition(null);
     }
 
     const handlerEdit = (value) => {
@@ -140,6 +145,7 @@ function Main() {
         })
         setUserLocList([]);
         setEditDestStatus(false);
+        setPosition(null);
     }
 
     const handlerRoute = (type) => {
@@ -189,7 +195,7 @@ function Main() {
     const locSearchBar =
         <div>
             <div className="search-container">
-                <Input value={userLocInput} label="Search" onChange={setUserLocInput} />
+                <Input value={userLocInput} label="Search" onChange={handlerChangeInput} />
                 <Button label={<AiOutlineSearch size={20} />} onClick={handlerSearch} />
             </div>
         </div>
@@ -211,7 +217,7 @@ function Main() {
     let locSearchResultsTable;
     if (Object.keys(searchResults).length > 0) {
         locSearchResultsTable =
-        <TableSearchResults list={searchResults} handlerAdd={handlerAddLoc} />
+            <TableSearchResults list={searchResults} handlerAdd={handlerAddLoc} />
     }
 
 
@@ -272,7 +278,7 @@ function Main() {
                             </tr></thead>
                         </table>
                         <TableSelectedLoc name={startHeader} item={userSelectedLocDetail} handler={handlerEdit} editStatus={editLocStatus} setPosition={setPosition} />
-                        <TableSelectedLoc name={endHeader} item={userSelectedDestDetail} handler={handlerEdit} editStatus={editDestStatus} />
+                        <TableSelectedLoc name={endHeader} item={userSelectedDestDetail} handler={handlerEdit} editStatus={editDestStatus} setPosition={setPosition} />
                         {routing}
                         {locSelectedTable}
                     </div>
