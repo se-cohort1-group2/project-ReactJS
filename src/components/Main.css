@@ -65,3 +65,7 @@ select {
 .set-start-end {
     margin: -10px 0 8px 0; 
 }
+
+.driving-walking-route {
+    margin: 0 0 8px 0; 
+}
