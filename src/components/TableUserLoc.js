@@ -1,11 +1,11 @@
 import styles from './Table.module.css';
-import { AiFillMinusCircle } from 'react-icons/ai'
+import { AiFillMinusCircle } from 'react-icons/ai';
 
-function TableUserLoc ({name, list, handler}) {
+function TableUserLoc ({ name, list, handler }) {
 
     return(
         <div>
-            <table className= {styles.table}>
+            <table className={styles.table} style={{ marginTop: "0" }}>
                 <thead>
                     <tr>
                         <th></th>
@@ -13,9 +13,9 @@ function TableUserLoc ({name, list, handler}) {
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.entries(list).map(([key,value]) => (
+                    {Object.entries(list).map(([key, value]) => (
                         <tr key={key}>
-                            <td onClick={() => handler(key,value)}>
+                            <td onClick={() => handler(key, value)}>
                                 <button className={styles.buttonminus}><AiFillMinusCircle size={28}/></button>
                             </td>
                             <td>{value.ADDRESS}</td>

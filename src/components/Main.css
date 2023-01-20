@@ -1,12 +1,14 @@
 h1.title {
     text-align: center; 
+    font-size: 30px; 
+    margin: 15px 0 15px 0; 
 }
 
 .main-container {
     overflow: hidden; 
-    width: 95%; 
-    height: 90vh; 
-    margin: 5vh auto 5vh auto; 
+    width: 96%; 
+    height: 94vh; 
+    margin: 3vh auto 3vh auto; 
     display: flex; 
     flex-direction: row; 
 }
@@ -58,4 +60,8 @@ select {
     display: flex; 
     flex-direction: row; 
     justify-content: right; 
+}
+
+.set-start-end {
+    margin: -10px 0 8px 0; 
 }

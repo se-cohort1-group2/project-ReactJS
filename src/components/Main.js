@@ -17,12 +17,12 @@ import DetectLocationButton from "./DetectLocationButton";
 import TaxiAvailabilityJSON from "./TaxiAvailability.json";
 
 // functions
-import funcGetPlanningArea from "./funcGetPlanningArea";
 import funcSearch from "./funcSearch";
 import funcGetLocDetails from "./funcGetLocDetails";
 import funcGetRoute from "./funcGetRoute";
 import funcGetPlanningAreaStatic from "./funcGetPlanningAreaStatic";
 import funcGetTaxiAvailability from "./funcGetTaxiAvailability";
+// import funcGetPlanningArea from "./funcGetPlanningArea";
 
 const initialLoc = {
     ADDRESS: "Please find and set a location"
@@ -93,6 +93,7 @@ function Main() {
 
     const handlerConfirmLoc = () => {
         setShowPolyLine(false);
+        // eslint-disable-next-line
         Object.entries(userLocList).map(([key, value]) => {
             setUserSelectedLocDetail(value);
             setUserLatLong([value.LATITUDE, value.LONGITUDE]);
@@ -129,6 +130,7 @@ function Main() {
 
     const handlerConfirmDest = () => {
         setShowPolyLine(false);
+        // eslint-disable-next-line
         Object.entries(userLocList).map(([key, value]) => {
             setUserSelectedDestDetail(value);
             setDestLatLong([value.LATITUDE, value.LONGITUDE]);
@@ -178,7 +180,7 @@ function Main() {
         })
         setPolygon(swapCoord);
         setCenter(swapCoord[0][0][0][0][0]);
-        setZoom(13);
+        setZoom(13.5);
     }
 
    const locSearchBar =
@@ -196,7 +198,7 @@ function Main() {
         locSelectedTable =
             <div>
                 <TableUserLoc name="Location" list={userLocList} handler={handlerDeleteLoc} />
-                <div className="search-container">
+                <div className="search-container set-start-end">
                     <Button label="Set as Start" onClick={handlerConfirmLoc} />
                     <Button label="Set as End" onClick={handlerConfirmDest} />
                 </div>
