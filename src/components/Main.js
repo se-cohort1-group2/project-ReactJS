@@ -134,6 +134,7 @@ function Main() {
     const handlerGetClickedDest = (value) => {
         console.log(value);
         funcGetLocDetails([value.Latitude, value.Longitude], handlerAddLoc);
+        setZoom(flyToZoom);
     }
 
     const handlerConfirmDest = () => {
@@ -311,7 +312,7 @@ function Main() {
                         radius={radius}
                         flyToZoom={flyToZoom}
                         taxiAvailabilityList={taxiAvailabilityList}
-                        handler={handlerGetClickedDest}
+                        handlerGetClickedDest={handlerGetClickedDest}
                         position={position}
                         setPosition={setPosition}
                     />

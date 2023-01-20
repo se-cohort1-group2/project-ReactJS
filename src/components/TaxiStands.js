@@ -7,7 +7,7 @@ import { Icon } from "leaflet";
 import TaxiStandsJSON from "./TaxiStands.json"; 
 import TaxiStandIcon from "../images/TaxiStandIcon.svg"; 
 
-function TaxiStands({ initialZoom, handler }) {
+function TaxiStands({ initialZoom, handlerGetClickedDest }) {
 
     const [ActivePopup, setActivePopup] = useState(null); 
 
@@ -45,7 +45,9 @@ function TaxiStands({ initialZoom, handler }) {
                                 <div>{item.Name}</div>
                                 <div>Barrier Free Access: {item.Bfa}</div>
                                 {/* <Button label="Get Location" onClick={() => {handler(item)}}/> */}
-                                <button className={style.popupButton} onClick={() => {handler(item)}}>
+                                <button className={style.popupButton} onClick={() => {
+                                    handlerGetClickedDest(item)
+                                }}>
                                     Use this location
                                 </button>
                             </div>

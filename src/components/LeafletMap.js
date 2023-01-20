@@ -28,7 +28,7 @@ function LeafletMap({
     radius,
     flyToZoom,
     taxiAvailabilityList,
-    handler,
+    handlerGetClickedDest,
     position,
     setPosition,
 }) {
@@ -57,8 +57,8 @@ function LeafletMap({
                 <ResetViewControl
                     icon="url(https://raw.githubusercontent.com/se-cohort1-group2/project-ReactJS/71a66e2ba063dc9ae3a652cac95531e249ea5b71/assets/ResetMapView.svg)"
                 />
-                <TaxiStands initialZoom={12} handler={handler} />
-                <TaxiAvailability initialZoom={12} taxiAvailabilityList={taxiAvailabilityList} handler={handler} />
+                <TaxiStands initialZoom={12} handlerGetClickedDest={handlerGetClickedDest} />
+                <TaxiAvailability initialZoom={12} taxiAvailabilityList={taxiAvailabilityList} handlerGetClickedDest={handlerGetClickedDest} />
                 <Polygon pathOptions={{ color: "green" }} positions={polygon} />
                 <SetView center={center} zoom={zoom} />
                 <DetectLocationMarker LocationDetected={LocationDetected} setLocationDetected={setLocationDetected} flyToZoom={flyToZoom} position={position} setPosition={setPosition} />
