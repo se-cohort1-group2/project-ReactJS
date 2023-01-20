@@ -224,7 +224,7 @@ function Main() {
     let routing;
     if (!editLocStatus && !editDestStatus) {
         routing =
-            <div className="search-container">
+            <div className="search-container driving-walking-route">
                 <Button label="Driving Route" onClick={() => {
                     handlerRoute("drive")
                 }} />
