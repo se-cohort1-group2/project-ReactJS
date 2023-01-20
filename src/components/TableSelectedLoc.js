@@ -1,9 +1,9 @@
 import styles from './Table.module.css';
 import { AiFillDelete } from 'react-icons/ai';
 
-function TableSelectedLoc ({ name, item, handler, editStatus }) {
+function TableSelectedLoc({ name, item, handler, editStatus, setPosition }) {
 
-    return(
+    return (
         <div>
             <table className={styles.table} style={{ marginBottom: "0" }}>
                 <thead>
@@ -14,11 +14,11 @@ function TableSelectedLoc ({ name, item, handler, editStatus }) {
                 </thead>
                 <tbody>
                     <tr key="selected location">
-                        <td style={{ width: "85%"}}>{item.ADDRESS}</td>
+                        <td style={{ width: "85%" }}>{item.ADDRESS}</td>
                         {!editStatus && <td onClick={() => {
-                                handler(name)
-                            }}>
-                            <button className={styles.buttonedit}><AiFillDelete size={20}/></button>
+                            handler(name)
+                        }}>
+                            <button className={styles.buttonedit} onClick={() => setPosition(null)}><AiFillDelete size={20} /></button>
                         </td>}
                     </tr>
                 </tbody>

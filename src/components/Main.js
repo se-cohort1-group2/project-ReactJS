@@ -40,7 +40,7 @@ function Main() {
     const [searchResults, setSearchResults] = useState({});
 
     // Edit location - location inputs/outputs
-    const [userLocInput, setUserLocInput] = useState();
+    const [userLocInput, setUserLocInput] = useState("");
     const [userLocList, setUserLocList] = useState({});
     const [userSelectedLocDetail, setUserSelectedLocDetail] = useState(initialLoc);
     const [userLatLong, setUserLatLong] = useState();
@@ -74,6 +74,13 @@ function Main() {
     const radius = 500;
     const flyToZoom = 15;
 
+    // Position for current location
+    const [position, setPosition] = useState(null);
+
+    const handlerChangeInput = (value) => {
+        setUserLocInput(value)
+    }
+
     const handlerSearch = () => {
         console.log(typeof userLocInput)
         if (typeof userLocInput === "string") {
@@ -102,6 +109,7 @@ function Main() {
         })
         setEditLocStatus(false);
         setUserLocList([]);
+        setPosition(null);
     }
 
     const handlerEdit = (value) => {
@@ -137,6 +145,7 @@ function Main() {
         })
         setUserLocList([]);
         setEditDestStatus(false);
+        setPosition(null);
     }
 
     const handlerRoute = (type) => {
@@ -155,7 +164,7 @@ function Main() {
         if (initialRender) {
             // funcGetPlanningArea(setAreaPolygonList); //get area update from OneMap
             funcGetPlanningAreaStatic(setAreaPolygonList); //get area from static json
-            funcGetTaxiAvailability(setTaxiAvailabilityList); //get taxi availability from LTA
+            // funcGetTaxiAvailability(setTaxiAvailabilityList); //get taxi availability from LTA
             console.log(taxiAvailabilityList);
             // eslint-disable-next-line
             initialRender = false;
@@ -183,10 +192,10 @@ function Main() {
         setZoom(13.5);
     }
 
-   const locSearchBar =
+    const locSearchBar =
         <div>
             <div className="search-container">
-                <Input value={userLocInput} label="Search" onChange={setUserLocInput} />
+                <Input value={userLocInput} label="Search" onChange={handlerChangeInput} />
                 <Button label={<AiOutlineSearch size={20} />} onClick={handlerSearch} />
             </div>
         </div>
@@ -206,10 +215,11 @@ function Main() {
     }
 
     let locSearchResultsTable;
-    if (Object.keys(searchResults).length > 0) { locSearchResultsTable = 
-        <TableSearchResults list={searchResults} handlerAdd={handlerAddLoc} />
+    if (Object.keys(searchResults).length > 0) {
+        locSearchResultsTable =
+            <TableSearchResults list={searchResults} handlerAdd={handlerAddLoc} />
     }
-    
+
 
     let routing;
     if (!editLocStatus && !editDestStatus) {
@@ -232,7 +242,7 @@ function Main() {
                     <h1 className="title">Taxi Availability App</h1>
                     <table className={styles.table} style={{ margin: "0 0 0 0" }}>
                         <thead><tr>
-                            <th>{<BiCurrentLocation size={20}/>}</th>
+                            <th>{<BiCurrentLocation size={20} />}</th>
                             <th style={{ padding: "10px 10px 10px 0px" }}>Find Locations</th>
                         </tr></thead>
                     </table>
@@ -263,23 +273,23 @@ function Main() {
                     <div className="routing-container">
                         <table className={styles.table} style={{ margin: "0 0 0 0" }}>
                             <thead><tr>
-                                <th>{<TbRoute size={20}/>}</th>
+                                <th>{<TbRoute size={20} />}</th>
                                 <th style={{ padding: "10px 10px 10px 0px" }}>Routing</th>
                             </tr></thead>
                         </table>
-                        <TableSelectedLoc name={startHeader} item={userSelectedLocDetail} handler={handlerEdit} editStatus={editLocStatus}/>
-                        <TableSelectedLoc name={endHeader} item={userSelectedDestDetail} handler={handlerEdit} editStatus={editDestStatus}/>
+                        <TableSelectedLoc name={startHeader} item={userSelectedLocDetail} handler={handlerEdit} editStatus={editLocStatus} setPosition={setPosition} />
+                        <TableSelectedLoc name={endHeader} item={userSelectedDestDetail} handler={handlerEdit} editStatus={editDestStatus} setPosition={setPosition} />
                         {routing}
                         {locSelectedTable}
                     </div>
-                        {locSearchResultsTable && 
+                    {locSearchResultsTable &&
                         <table className={styles.table} style={{ margin: "0 0 0 0" }}>
                             <thead><tr>
                                 <th style={{ width: "32px" }}></th>
                                 <th style={{ padding: "10px 10px 10px 0px" }}>Search Results</th>
                             </tr></thead>
                         </table>
-                        }
+                    }
                     <div className="search-results-container">
                         {locSearchResultsTable}
                     </div>
@@ -302,6 +312,8 @@ function Main() {
                         flyToZoom={flyToZoom}
                         taxiAvailabilityList={taxiAvailabilityList}
                         handler={handlerGetClickedDest}
+                        position={position}
+                        setPosition={setPosition}
                     />
                 </div>
 
