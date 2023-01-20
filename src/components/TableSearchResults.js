@@ -1,21 +1,21 @@
 import styles from './Table.module.css';
-import { AiFillPlusCircle } from 'react-icons/ai'
+import { AiFillPlusCircle } from 'react-icons/ai';
 
-function TableSearchResults ({list, handlerAdd}) {
+function TableSearchResults ({ list, handlerAdd }) {
 
     return(
         <div>
-            <table className= {styles.table}>
-                <thead>
+            <table className={styles.table} style={{ margin: "0 0 0 0" }}>
+                {/* <thead>
                     <tr>
                         <th></th>
                         <th>Search Results</th>
                     </tr>
-                </thead>
+                </thead> */}
                 <tbody>
-                    {Object.entries(list).map(([key,value]) => (
+                    {Object.entries(list).map(([key, value]) => (
                         <tr key={key}>
-                            <td onClick={() => handlerAdd(key,value)}>
+                            <td onClick={() => handlerAdd(key, value)}>
                                 <button className={styles.buttonplus}><AiFillPlusCircle size={28}/></button>
                             </td>
                             <td>{value.ADDRESS}</td>

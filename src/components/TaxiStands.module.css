@@ -1,0 +1,36 @@
+.popupTaxiStand {
+    font-size: 14px; 
+}
+
+.popupTaxiStandHeader {
+    background-color: #ee8855; 
+    color: white; 
+    letter-spacing: 0.5px; 
+    font-size: 18px; 
+    font-weight: bold; 
+    margin: -14px -20px 10px -20px; 
+    padding: 10px 0 5px 20px; 
+    border-radius: 10px 10px 0 0; 
+}
+
+.popupTaxiStandCode {
+    font-size: 20px; 
+    font-weight: bold; 
+    margin: 0 0 2px 0; 
+}
+
+.popupButton {
+    margin: 10px 0 0 0; 
+    padding: 6px 10px 4px 10px; 
+    color: white; 
+    background-color: #ee8855; 
+    border: 1px solid #ee8855; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    transition-duration: 0.1s; 
+}
+
+.popupButton:hover {
+    background-color: lightslategray; 
+    border: 1px solid lightslategray; 
+}

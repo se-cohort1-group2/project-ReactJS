@@ -1,24 +1,25 @@
 import styles from './Table.module.css';
-import { RiEditBoxFill } from 'react-icons/ri'
+import { AiFillDelete } from 'react-icons/ai';
 
-function TableSelectedLoc ({name, item, handler}) {
+function TableSelectedLoc({ name, item, handler, editStatus, setPosition }) {
 
-    return(
+    return (
         <div>
-            <table className= {styles.table} style={{ margin: "-5px 0 0 0" }}>
+            <table className={styles.table} style={{ marginBottom: "0" }}>
                 <thead>
                     <tr>
-                        <th></th>
-                        <th style={{ padding: "15px 10px 10px 5px" }}>{name}</th>
+                        <th style={{ padding: "0px 10px 0px 10px", backgroundColor: 'white' }}>{name}</th>
+                        <th style={{ padding: "0px 10px 0px 10px", backgroundColor: 'white' }}></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr key="selected location">
-                         <td onClick={handler}>
-                            <button className={styles.buttonedit}><RiEditBoxFill size={28}/></button>
-                        </td>
-
-                        <td>{item.ADDRESS}</td>
+                        <td style={{ width: "85%" }}>{item.ADDRESS}</td>
+                        {!editStatus && <td onClick={() => {
+                            handler(name)
+                        }}>
+                            <button className={styles.buttonedit} onClick={() => setPosition(null)}><AiFillDelete size={20} /></button>
+                        </td>}
                     </tr>
                 </tbody>
             </table>

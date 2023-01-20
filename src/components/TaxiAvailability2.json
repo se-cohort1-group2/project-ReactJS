@@ -1,0 +1,9 @@
+{
+    "odata.metadata": "http://datamall2.mytransport.sg/ltaodataservice/$metadata#TaxiAvailability",
+    "value": [
+        {
+            "Longitude": 103.89539,
+            "Latitude": 1.29623
+        }
+    ]
+}

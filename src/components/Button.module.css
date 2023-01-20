@@ -1,18 +1,20 @@
 .button {
-  min-width: 3rem;
-  max-height: 2.6rem;
-  margin: 0.4rem 0.5rem 0 0;
-  padding: 0.5rem;
-  background-color: lightseagreen;
-  border-radius: 10px;
-  border: 2px solid transparent;
-  color: white;
-  transition-duration: 0.3s;
-  white-space: nowrap;
+    font-size: 0.9rem; 
+    min-width: 3rem; 
+    max-height: 2.6rem; 
+    margin: 0.4rem 0.5rem 0 0; 
+    padding: 0.5rem; 
+    color: white; 
+    background-color: lightseagreen; 
+    border: 2px solid lightseagreen; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    transition-duration: 0.1s; 
+    white-space: nowrap; 
 }
+
 .button:hover {
-  background-color: white;
-  color: black;
-  border: 2px solid lightseagreen;
-  border-width: 2px;
+    color: white; 
+    background-color: lightslategray; 
+    border: 2px solid lightslategray; 
 }

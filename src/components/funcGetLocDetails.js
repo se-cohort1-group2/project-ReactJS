@@ -7,7 +7,8 @@ function funcGetLocDetails([lat,long], handler){
         longitude: long,
         buffer: 10,
         addressType: "All",
-        token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjk2NzQsInVzZXJfaWQiOjk2NzQsImVtYWlsIjoibHllLnlvbmcueGluLjk2NjBAZ21haWwuY29tIiwiZm9yZXZlciI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL29tMi5kZmUub25lbWFwLnNnXC9hcGlcL3YyXC91c2VyXC9zZXNzaW9uIiwiaWF0IjoxNjczNzYzNjk0LCJleHAiOjE2NzQxOTU2OTQsIm5iZiI6MTY3Mzc2MzY5NCwianRpIjoiODRjNTA4YmE3ZjUxZjkwNTdhZjg1ODBlMDY4ZGZlMmUifQ.5eWWvN2RThAzy7TXft0tSqgIxk16fJkFcFWsvIoNWMM"
+        token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjk2NTYsInVzZXJfaWQiOjk2NTYsImVtYWlsIjoicGhvZWJleWtxQGdtYWlsLmNvbSIsImZvcmV2ZXIiOmZhbHNlLCJpc3MiOiJodHRwOlwvXC9vbTIuZGZlLm9uZW1hcC5zZ1wvYXBpXC92MlwvdXNlclwvc2Vzc2lvbiIsImlhdCI6MTY3NDE2NDU4MSwiZXhwIjoxNjc0NTk2NTgxLCJuYmYiOjE2NzQxNjQ1ODEsImp0aSI6IjEwM2VlYzUzNTQ3NTgwNmQ1MGI5OWQzNWY3ZTg0NmQzIn0.wy7To0TUxuy5biHrcwf2pdu9DDRLX85kKU3QxJL7-H8"
+        // token expires Monday 23rd Jan 2023
     }
 
     let resultList = [];
@@ -41,10 +42,10 @@ function funcGetLocDetails([lat,long], handler){
                     
                     let address;
 
-                    if (result.BLOCK != null || result.BLOCK != "null" || result.BLOCK != "NIL") address = result.BLOCK
-                    if (result.ROAD != null || result.ROAD != "null" || result.ROAD != "NIL") address = address +" "+ result.ROAD
-                    if (result.BUILDINGNAME != null || result.BUILDINGNAME != "null"|| result.BUILDINGNAME != "NIL") address = address +" "+ result.BUILDING
-                    if (result.POSTALCODE != null || result.POSTALCODE != "null" || result.POSTALCODE != "NIL"|| result.POSTALCODE !== "") address = address + " SINGAPORE " + result.POSTALCODE
+                    if (result.BLOCK !== null && result.BLOCK !== "null" && result.BLOCK !== "NIL") address = result.BLOCK
+                    if (result.ROAD !== null && result.ROAD !== "null" && result.ROAD !== "NIL") address = address +" "+ result.ROAD
+                    if (result.BUILDINGNAME !== null && result.BUILDINGNAME !== "null"&& result.BUILDINGNAME !== "NIL") address = address +" "+ result.BUILDING
+                    if (result.POSTALCODE !== null && result.POSTALCODE !== "null" && result.POSTALCODE !== "NIL"&& result.POSTALCODE !== "") address = address + " SINGAPORE " + result.POSTALCODE
                     
                     address = address.replace("undefined", "")
                     address = address.replace("null", "")

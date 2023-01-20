@@ -1,14 +1,13 @@
-import "./TaxiAvailability.css"; 
+import style from "./TaxiAvailability.module.css"; 
 
 import { useState } from "react"; 
 import { Marker, Popup, useMapEvents } from "react-leaflet"; 
 import { Icon } from "leaflet"; 
 
-import TaxiAvailabilityJSON from "./TaxiAvailability.json"; 
 import TaxiAvailableIcon from "../images/TaxiAvailableIcon.svg"; 
 import GetAddress from "./GetAddress"; 
 
-function TaxiAvailability({ initialZoom }) {
+function TaxiAvailability({ initialZoom, taxiAvailabilityList, handlerGetClickedDest }) {
 
     const [ActivePopup, setActivePopup] = useState(null); 
 
@@ -21,14 +20,14 @@ function TaxiAvailability({ initialZoom }) {
 
     return (
         <>
-        {TaxiAvailabilityJSON.value.map(item => {
+        {taxiAvailabilityList.map(item => {
             return (
                 <>
                 {CurrentZoomLevel >= 14.5 && (
                     <Marker
                         key={item.id}
                         position={[item.Latitude, item.Longitude]}
-                        icon={ new Icon({iconSize: [25, 25], iconUrl: TaxiAvailableIcon}) }
+                        icon={new Icon({ iconSize: [25, 25], iconUrl: TaxiAvailableIcon })}
                         onClick={() => {
                             setActivePopup(item.id); 
                             console.log(ActivePopup)
@@ -40,9 +39,15 @@ function TaxiAvailability({ initialZoom }) {
                                 setActivePopup(null); 
                             }}
                         >
-                            <div className="popup-TaxiAvailable">
-                                <div className="popup-TaxiAvailable-header">Taxi Available</div>
+                            <div className={style.popupTaxiAvailable}>
+                                <div className={style.popupTaxiAvailableHeader}>Taxi Available</div>
                                 <GetAddress Lat={item.Latitude} Long={item.Longitude}/>
+                                {/* <Button label="Get Location" onClick={() => {handler(item)}}/> */}
+                                <button className={style.popupButton} onClick={() => {
+                                    handlerGetClickedDest(item)
+                                }}>
+                                    Use this location
+                                </button>
                             </div>
                         </Popup>
                     </Marker>
